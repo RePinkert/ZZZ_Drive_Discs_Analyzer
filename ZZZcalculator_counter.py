@@ -2,6 +2,14 @@ import pandas as pd
 from typing import Dict, List, Set, Tuple
 import itertools
 
+def 拆分属性(属性字符串):
+    """拆分多择属性字符串，返回属性列表"""
+    if pd.isna(属性字符串) or not str(属性字符串).strip():
+        return []
+    if '/' in str(属性字符串):
+        return [attr.strip() for attr in str(属性字符串).split('/') if attr.strip()]
+    return [str(属性字符串).strip()]
+
 def 反选主副词条():
     print("🚀 开始反选主副词条分析...")
     
@@ -71,9 +79,10 @@ def 反选主副词条():
         主套装 = row['主套装(×4)']
         辅套装 = row['辅套装(×2)']
         
-        主属性_4号位 = str(row['4号位主属性']) if str(row['4号位主属性']) != '' else None
-        主属性_5号位 = str(row['5号位主属性']) if str(row['5号位主属性']) != '' else None
-        主属性_6号位 = str(row['6号位主属性']) if str(row['6号位主属性']) != '' else None
+        # 拆分多择主属性
+        主属性_4号位列表 = 拆分属性(row['4号位主属性'])
+        主属性_5号位列表 = 拆分属性(row['5号位主属性'])
+        主属性_6号位列表 = 拆分属性(row['6号位主属性'])
         
         高优先级副属性 = str(row['高优先级副属性']) if str(row['高优先级副属性']) != '' else None
         中优先级副属性 = str(row['中优先级副属性']) if str(row['中优先级副属性']) != '' else None
@@ -85,6 +94,9 @@ def 反选主副词条():
             if attr is not None and attr != '':
                 所有副属性.add(attr)
         
+        # 获取代理人
+        代理人 = row['Agent']
+        
         # 处理主套装
         for 套装 in [主套装, 辅套装]:
             if 套装 not in 已出现组合:
@@ -92,15 +104,21 @@ def 反选主副词条():
                     '4号位': set(),
                     '5号位': set(),
                     '6号位': set(),
-                    '副属性': set()
+                    '副属性': set(),
+                    '代理人': set()
                 }
             
-            if 主属性_4号位:
-                已出现组合[套装]['4号位'].add(主属性_4号位)
-            if 主属性_5号位:
-                已出现组合[套装]['5号位'].add(主属性_5号位)
-            if 主属性_6号位:
-                已出现组合[套装]['6号位'].add(主属性_6号位)
+            # 添加代理人
+            if 代理人 and str(代理人).strip():
+                已出现组合[套装]['代理人'].add(str(代理人).strip())
+            
+            # 添加所有拆分后的属性到集合中
+            for 属性 in 主属性_4号位列表:
+                已出现组合[套装]['4号位'].add(属性)
+            for 属性 in 主属性_5号位列表:
+                已出现组合[套装]['5号位'].add(属性)
+            for 属性 in 主属性_6号位列表:
+                已出现组合[套装]['6号位'].add(属性)
             
             副属性列表 = [attr for attr in [高优先级副属性, 中优先级副属性, 正常优先级副属性, 低优先级副属性] 
                           if attr is not None and attr != '']
@@ -124,8 +142,12 @@ def 反选主副词条():
         反选6号位 = 按标准顺序排序(list(所有主属性['6号位'] - 已出现['6号位']), '6号位')
         反选副属性 = 按标准顺序排序(list(所有副属性 - 已出现['副属性']), '副属性')
         
+        # 获取代理人列表并按字母序排序
+        代理人列表 = sorted(list(已出现['代理人'])) if '代理人' in 已出现 else []
+        代理人显示 = f" ({', '.join(代理人列表)})" if 代理人列表 else ""
+        
         # 多行格式化输出
-        print(f"📦 {套装名称}")
+        print(f"🖸 {套装名称}{代理人显示}")
         print(f"{分隔线}")
         print(f"  4号位: {', '.join(反选4号位) if 反选4号位 else '无'} ({len(反选4号位)}个)")
         print(f"  5号位: {', '.join(反选5号位) if 反选5号位 else '无'} ({len(反选5号位)}个)")
