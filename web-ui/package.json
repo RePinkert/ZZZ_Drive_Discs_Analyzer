@@ -1,0 +1,18 @@
+{
+  "name": "zzz-drive-disc-analyzer",
+  "version": "1.0.0",
+  "description": "绝区零驱动盘分析器 - TypeScript版",
+  "main": "dist/app.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "clean": "rm -rf dist"
+  },
+  "keywords": ["zzz", "drive-disc", "analyzer", "typescript"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}

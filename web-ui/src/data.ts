@@ -1,7 +1,7 @@
-// 绝区零驱动盘分析器 - 核心逻辑
+import type { Agent, SetVariables, StandardOrder, AllPossibleStats } from './types.js';
 
 // 原始数据（从CSV转换）
-const agentData = [
+export const agentData: Agent[] = [
     { agent: "叶瞬光", id: 1687, mainSet: "沧浪行歌", subSet: "折枝剑歌", slot4: "暴击伤害", slot5: "物", slot6: "攻击力%", subHigh: "暴击伤害", subMid: "攻击力%", subNormal: "暴击率", subLow: "穿透值" },
     { agent: "照", id: 1686, mainSet: "静听嘉音", subSet: "云岿如我", slot4: "生命值%", slot5: "生命值%", slot6: "生命值%/能量自动回复", subHigh: "生命值%", subMid: "生命值", subNormal: "", subLow: "" },
     { agent: "般岳", id: 1626, mainSet: "云岿如我", subSet: "折枝剑歌", slot4: "暴击率", slot5: "火", slot6: "生命值%", subHigh: "生命值%", subMid: "暴击率", subNormal: "暴击伤害", subLow: "" },
@@ -52,7 +52,7 @@ const agentData = [
 ];
 
 // 套装变量数据
-const setVariables = {
+export const setVariables: SetVariables = {
     "獠牙重金属": { slot4: ["攻击力%"], slot5: ["攻击力%"], slot6: ["攻击力%"], subStats: ["生命值"] },
     "激素朋克": { slot4: ["生命值%"], slot5: ["生命值%"], slot6: ["生命值%"], subStats: ["生命值%"] },
     "震星迪斯科": { slot4: ["防御力%"], slot5: ["防御力%"], slot6: ["防御力%"], subStats: ["攻击力"] },
@@ -80,7 +80,7 @@ const setVariables = {
 };
 
 // 标准属性顺序
-const standardOrder = {
+export const standardOrder: StandardOrder = {
     slot4: ['攻击力%', '暴击伤害', '暴击率', '生命值%', '防御力%', '异常精通'],
     slot5: ['攻击力%', '生命值%', '防御力%', '穿透率', '物', '火', '冰', '电', '以太'],
     slot6: ['攻击力%', '暴击伤害', '暴击率', '生命值%', '防御力%', '冲击力', '异常掌握', '能量自动回复'],
@@ -88,215 +88,9 @@ const standardOrder = {
 };
 
 // 所有可选主属性
-const allPossibleStats = {
+export const allPossibleStats: AllPossibleStats = {
     slot4: ['攻击力%', '暴击伤害', '暴击率', '生命值%', '防御力%', '异常精通'],
     slot5: ['攻击力%', '生命值%', '防御力%', '穿透率', '物', '火', '冰', '电', '以太'],
     slot6: ['攻击力%', '暴击伤害', '暴击率', '生命值%', '防御力%', '冲击力', '异常掌握', '能量自动回复'],
     subStats: ['生命值', '生命值%', '攻击力', '攻击力%', '防御力', '防御力%', '穿透值', '暴击率', '暴击伤害', '异常精通']
 };
-
-// 拆分多择属性
-function splitStats(str) {
-    if (!str || str.trim() === '') return [];
-    return str.split('/').map(s => s.trim()).filter(s => s);
-}
-
-// 按标准顺序排序
-function sortByStandardOrder(stats, type) {
-    const order = standardOrder[type] || [];
-    const sorted = [...order.filter(s => stats.includes(s))];
-    stats.forEach(s => {
-        if (!sorted.includes(s)) sorted.push(s);
-    });
-    return sorted;
-}
-
-// 统计套装属性
-function analyzeSets() {
-    const setStats = {};
-    
-    // 初始化所有套装
-    Object.keys(setVariables).forEach(setName => {
-        setStats[setName] = {
-            slot4: new Set(),
-            slot5: new Set(),
-            slot6: new Set(),
-            subStats: new Set(),
-            agents: {}
-        };
-    });
-    
-    // 遍历代理人数据
-    agentData.forEach(agent => {
-        const sets = [agent.mainSet, agent.subSet];
-        
-        sets.forEach(setName => {
-            if (!setStats[setName]) {
-                setStats[setName] = {
-                    slot4: new Set(),
-                    slot5: new Set(),
-                    slot6: new Set(),
-                    subStats: new Set(),
-                    agents: {}
-                };
-            }
-            
-            // 添加代理人
-            setStats[setName].agents[agent.id] = agent.agent;
-            
-            // 添加主属性
-            splitStats(agent.slot4).forEach(s => setStats[setName].slot4.add(s));
-            splitStats(agent.slot5).forEach(s => setStats[setName].slot5.add(s));
-            splitStats(agent.slot6).forEach(s => setStats[setName].slot6.add(s));
-            
-            // 添加副属性
-            [agent.subHigh, agent.subMid, agent.subNormal, agent.subLow].forEach(sub => {
-                splitStats(sub).forEach(s => setStats[setName].subStats.add(s));
-            });
-        });
-    });
-    
-    return setStats;
-}
-
-// 当前模式: 'used' 或 'inverse'
-let currentMode = 'used';
-let allSetStats = null;
-
-// 渲染统计概览
-function renderOverview() {
-    const totalAgents = agentData.length;
-    const totalSets = Object.keys(setVariables).length;
-    const usedSets = Object.keys(allSetStats).filter(s => Object.keys(allSetStats[s].agents).length > 0).length;
-    
-    document.getElementById('statsOverview').innerHTML = `
-        <div class="stat-card">
-            <div class="number">${totalAgents}</div>
-            <div class="label">代理人</div>
-        </div>
-        <div class="stat-card">
-            <div class="number">${totalSets}</div>
-            <div class="label">套装总数</div>
-        </div>
-        <div class="stat-card">
-            <div class="number">${usedSets}</div>
-            <div class="label">已使用套装</div>
-        </div>
-        <div class="stat-card">
-            <div class="number">${currentMode === 'used' ? '✓' : '✗'}</div>
-            <div class="label">${currentMode === 'used' ? '正向统计' : '反选分析'}</div>
-        </div>
-    `;
-}
-
-// 渲染套装卡片
-function renderSetCard(setName, stats, isInverse = false) {
-    const agents = Object.entries(stats.agents)
-        .sort((a, b) => parseInt(b[0]) - parseInt(a[0]))
-        .map(([id, name]) => `<span>${name}</span>`)
-        .join('');
-    
-    const agentCount = Object.keys(stats.agents).length;
-    
-    const renderStats = (statSet, type, isInverse) => {
-        let statsArray = Array.from(statSet);
-        
-        if (isInverse) {
-            // 反选模式: 显示未使用的属性
-            const allStats = allPossibleStats[type];
-            statsArray = allStats.filter(s => !statSet.has(s));
-        }
-        
-        const sorted = sortByStandardOrder(statsArray, type);
-        
-        if (sorted.length === 0) {
-            return '<span class="no-data">无</span>';
-        }
-        
-        return sorted.map(s => `<span class="stat-tag ${isInverse ? 'unused' : ''}">${s}</span>`).join('');
-    };
-    
-    return `
-        <div class="set-card" data-set="${setName}" data-agents="${Object.values(stats.agents).join(' ')}">
-            <div class="set-header">
-                <span class="set-name">${setName}</span>
-                <span class="agent-count">${agentCount} 代理人</span>
-            </div>
-            ${agents ? `<div class="agents-list">${agents}</div>` : ''}
-            <div class="slot-section">
-                <div class="slot-title">4号位 ${isInverse ? '(未使用)' : ''}</div>
-                <div class="stats-list">${renderStats(stats.slot4, 'slot4', isInverse)}</div>
-            </div>
-            <div class="slot-section">
-                <div class="slot-title">5号位 ${isInverse ? '(未使用)' : ''}</div>
-                <div class="stats-list">${renderStats(stats.slot5, 'slot5', isInverse)}</div>
-            </div>
-            <div class="slot-section">
-                <div class="slot-title">6号位 ${isInverse ? '(未使用)' : ''}</div>
-                <div class="stats-list">${renderStats(stats.slot6, 'slot6', isInverse)}</div>
-            </div>
-            <div class="slot-section">
-                <div class="slot-title">副属性 ${isInverse ? '(未使用)' : ''}</div>
-                <div class="stats-list">${renderStats(stats.subStats, 'subStats', isInverse)}</div>
-            </div>
-        </div>
-    `;
-}
-
-// 渲染所有套装
-function renderAllSets(searchQuery = '') {
-    const grid = document.getElementById('setsGrid');
-    const isInverse = currentMode === 'inverse';
-    
-    let html = '';
-    
-    // 按代理人数量排序
-    const sortedSets = Object.entries(allSetStats)
-        .sort((a, b) => Object.keys(b[1].agents).length - Object.keys(a[1].agents).length);
-    
-    sortedSets.forEach(([setName, stats]) => {
-        // 搜索过滤
-        if (searchQuery) {
-            const query = searchQuery.toLowerCase();
-            const setMatch = setName.toLowerCase().includes(query);
-            const agentMatch = Object.values(stats.agents).some(a => a.toLowerCase().includes(query));
-            if (!setMatch && !agentMatch) return;
-        }
-        
-        html += renderSetCard(setName, stats, isInverse);
-    });
-    
-    grid.innerHTML = html;
-}
-
-// 初始化
-function init() {
-    allSetStats = analyzeSets();
-    renderOverview();
-    renderAllSets();
-    
-    // 模式切换
-    document.getElementById('modeUsed').addEventListener('click', () => {
-        currentMode = 'used';
-        document.getElementById('modeUsed').classList.add('active');
-        document.getElementById('modeInverse').classList.remove('active');
-        renderOverview();
-        renderAllSets(document.getElementById('searchInput').value);
-    });
-    
-    document.getElementById('modeInverse').addEventListener('click', () => {
-        currentMode = 'inverse';
-        document.getElementById('modeInverse').classList.add('active');
-        document.getElementById('modeUsed').classList.remove('active');
-        renderOverview();
-        renderAllSets(document.getElementById('searchInput').value);
-    });
-    
-    // 搜索功能
-    document.getElementById('searchInput').addEventListener('input', (e) => {
-        renderAllSets(e.target.value);
-    });
-}
-
-// 启动
-init();

@@ -4,3 +4,19 @@ ref-ZZZ-Scanner/
 
 # 设计文档
 OCR_DESIGN.md
+
+# Web UI - Node.js
+web-ui/node_modules/
+web-ui/package-lock.json
+web-ui/dist/
+web-ui/*.tsbuildinfo
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

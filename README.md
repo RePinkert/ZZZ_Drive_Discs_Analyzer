@@ -39,6 +39,46 @@
   副属性: 生命值, 生命值%, 攻击力, 防御力, 防御力%, 异常精通 (6个)
 ```
 
+## Web UI | 网页版界面
+
+项目还包含一个基于 **TypeScript** 的网页版分析器，提供可视化界面。
+
+### 快速开始
+
+```bash
+cd web-ui
+npm install
+npm run build
+# 然后在浏览器中打开 index.html
+```
+
+### 开发命令
+
+```bash
+# 监听文件变化，自动重新编译
+npm run watch
+
+# 清理编译输出
+npm run clean
+```
+
+### 架构设计
+
+```
+web-ui/
+├── src/
+│   ├── types.ts      # 类型定义 (Agent, SetStats, AnalysisMode等)
+│   ├── data.ts       # 数据定义 (agentData, setVariables)
+│   ├── utils.ts      # 工具函数
+│   ├── analyzer.ts   # 分析逻辑
+│   ├── renderer.ts   # 渲染逻辑
+│   └── app.ts        # 主应用类
+├── dist/             # 编译输出 (被git忽略)
+└── index.html        # 入口页面
+```
+
+---
+
 ## File Structure | 文件结构
 
 ```
@@ -48,7 +88,10 @@ ZZZ_Drive_Discs_Analyzer/
 ├── ZZZcalculator.py             # Set statistics tool
 ├── ZZZcalculator_counter.py     # Inverse analysis tool
 ├── requirements.txt             # Python dependencies
-└── README.md                  # This file
+├── README.md                    # This file
+└── web-ui/                      # Web interface (TypeScript)
+    ├── src/                     # TypeScript source code
+    └── index.html               # Entry page
 ```
 
 ## CSV Format | CSV 格式
