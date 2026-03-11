@@ -10,7 +10,7 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
@@ -18,46 +18,151 @@
             color: #e0e0e0;
             padding: 20px;
         }
-        
+
         .container {
             max-width: 1400px;
             margin: 0 auto;
         }
-        
-        header {
-            text-align: center;
-            margin-bottom: 30px;
+
+        /* 导航栏 */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #333;
         }
-        
-        h1 {
-            font-size: 2.5rem;
+
+        .nav-brand {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+        }
+
+        .nav-brand h1 {
+            font-size: 1.8rem;
             background: linear-gradient(90deg, #00d9ff, #ff6b9d);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 10px;
         }
-        
-        .subtitle {
+
+        .nav-brand .subtitle {
             color: #888;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
-        
-        .controls {
+
+        .nav-links {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .nav-links .mode-toggle {
+            display: flex;
+            background: #0d0d1a;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid #333;
+        }
+
+        .nav-links .mode-toggle button {
+            padding: 10px 20px;
+            border: none;
+            background: transparent;
+            color: #888;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .nav-links .mode-toggle button.active {
+            background: #00d9ff;
+            color: #000;
+            font-weight: 600;
+        }
+
+        .nav-links .mode-toggle button:hover:not(.active) {
+            background: #1a1a3e;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* 按钮样式 */
+        .btn {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: #00d9ff;
+            color: #000;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            background: #00b8d9;
+        }
+
+        .btn-secondary {
+            background: #333;
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            background: #444;
+        }
+
+        .btn-edit {
+            background: rgba(0, 217, 255, 0.2);
+            color: #00d9ff;
+            padding: 6px 12px;
+            font-size: 0.8rem;
+        }
+
+        .btn-delete {
+            background: rgba(255, 100, 100, 0.2);
+            color: #ff6b6b;
+            padding: 6px 12px;
+            font-size: 0.8rem;
+        }
+
+        .btn.dirty {
+            background: #ff6b9d;
+        }
+
+        /* 页面容器 */
+        #pageContainer {
+            min-height: calc(100vh - 200px);
+        }
+
+        /* 统计页面 */
+        .stats-page .controls {
             display: flex;
             gap: 15px;
             margin-bottom: 25px;
             flex-wrap: wrap;
             align-items: center;
         }
-        
-        .search-box {
+
+        .stats-page .search-box {
             flex: 1;
             min-width: 200px;
             position: relative;
         }
-        
-        .search-box input {
+
+        .stats-page .search-box input {
             width: 100%;
             padding: 12px 40px 12px 15px;
             border: 2px solid #333;
@@ -67,13 +172,13 @@
             font-size: 1rem;
             transition: border-color 0.3s;
         }
-        
-        .search-box input:focus {
+
+        .stats-page .search-box input:focus {
             outline: none;
             border-color: #00d9ff;
         }
-        
-        .search-box::after {
+
+        .stats-page .search-box::after {
             content: '🔍';
             position: absolute;
             right: 12px;
@@ -81,16 +186,16 @@
             transform: translateY(-50%);
             opacity: 0.5;
         }
-        
-        .mode-toggle {
+
+        .stats-page .mode-toggle {
             display: flex;
             background: #0d0d1a;
             border-radius: 8px;
             overflow: hidden;
             border: 2px solid #333;
         }
-        
-        .mode-toggle button {
+
+        .stats-page .mode-toggle button {
             padding: 12px 20px;
             border: none;
             background: transparent;
@@ -99,24 +204,20 @@
             font-size: 0.95rem;
             transition: all 0.3s;
         }
-        
-        .mode-toggle button.active {
+
+        .stats-page .mode-toggle button.active {
             background: #00d9ff;
             color: #000;
             font-weight: 600;
         }
-        
-        .mode-toggle button:hover:not(.active) {
-            background: #1a1a3e;
-        }
-        
+
         .stats-overview {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 15px;
             margin-bottom: 25px;
         }
-        
+
         .stat-card {
             background: rgba(255,255,255,0.05);
             border-radius: 10px;
@@ -124,25 +225,25 @@
             text-align: center;
             border: 1px solid #333;
         }
-        
+
         .stat-card .number {
             font-size: 2rem;
             font-weight: bold;
             color: #00d9ff;
         }
-        
+
         .stat-card .label {
             font-size: 0.85rem;
             color: #888;
             margin-top: 5px;
         }
-        
+
         .sets-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 20px;
         }
-        
+
         .set-card {
             background: rgba(255,255,255,0.03);
             border-radius: 12px;
@@ -150,30 +251,26 @@
             border: 1px solid #333;
             transition: all 0.3s;
         }
-        
+
         .set-card:hover {
             border-color: #00d9ff;
             transform: translateY(-2px);
             box-shadow: 0 10px 30px rgba(0,217,255,0.1);
         }
-        
-        .set-card.hidden {
-            display: none;
-        }
-        
+
         .set-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 15px;
         }
-        
+
         .set-name {
             font-size: 1.2rem;
             font-weight: 600;
             color: #fff;
         }
-        
+
         .agent-count {
             background: #00d9ff;
             color: #000;
@@ -182,7 +279,7 @@
             font-size: 0.8rem;
             font-weight: 600;
         }
-        
+
         .agents-list {
             font-size: 0.85rem;
             color: #888;
@@ -190,7 +287,7 @@
             padding-bottom: 15px;
             border-bottom: 1px solid #333;
         }
-        
+
         .agents-list span {
             display: inline-block;
             background: rgba(255,107,157,0.2);
@@ -200,24 +297,24 @@
             margin: 2px;
             font-size: 0.8rem;
         }
-        
+
         .slot-section {
             margin-bottom: 12px;
         }
-        
+
         .slot-title {
             font-size: 0.8rem;
             color: #00d9ff;
             margin-bottom: 5px;
             font-weight: 600;
         }
-        
+
         .stats-list {
             display: flex;
             flex-wrap: wrap;
             gap: 6px;
         }
-        
+
         .stat-tag {
             padding: 4px 10px;
             border-radius: 4px;
@@ -225,26 +322,430 @@
             background: rgba(255,255,255,0.1);
             color: #ccc;
         }
-        
+
         .stat-tag.unused {
             background: rgba(255,100,100,0.2);
             color: #ff8888;
             text-decoration: line-through;
             opacity: 0.7;
         }
-        
+
         .stat-tag.highlight {
             background: rgba(0,217,255,0.3);
             color: #00d9ff;
             border: 1px solid #00d9ff;
         }
-        
+
         .no-data {
             color: #666;
             font-style: italic;
             font-size: 0.85rem;
         }
-        
+
+        /* 编辑页面 */
+        .edit-page .edit-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .edit-page .search-box {
+            flex: 1;
+            min-width: 200px;
+            position: relative;
+        }
+
+        .edit-page .search-box input {
+            width: 100%;
+            padding: 12px 40px 12px 15px;
+            border: 2px solid #333;
+            border-radius: 8px;
+            background: #0d0d1a;
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .edit-page .search-box input:focus {
+            outline: none;
+            border-color: #00d9ff;
+        }
+
+        .edit-page .search-box::after {
+            content: '🔍';
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.5;
+        }
+
+        .agents-list-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 15px;
+        }
+
+        .agent-card {
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid #333;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .agent-card:hover {
+            border-color: #00d9ff;
+        }
+
+        /* 新增代理人高亮样式 */
+        .agent-card-new {
+            border: 2px solid #ff6b9d !important;
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.15) 0%, rgba(255, 142, 71, 0.1) 100%);
+            animation: cardHighlight 2s ease-in-out infinite;
+        }
+
+        @keyframes cardHighlight {
+            0%, 100% {
+                box-shadow: 0 0 10px rgba(255, 107, 157, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(255, 107, 157, 0.5);
+            }
+        }
+
+        .agent-card-new .agent-name {
+            color: #ff6b9d;
+        }
+
+        .agent-card-new::before {
+            content: 'NEW';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: linear-gradient(135deg, #ff6b9d, #ff8e47);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            z-index: 1;
+        }
+
+        .agent-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .agent-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .agent-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .agent-id {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .agent-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .agent-card-body {
+            font-size: 0.9rem;
+        }
+
+        .agent-sets {
+            margin-bottom: 10px;
+        }
+
+        .set-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-right: 5px;
+        }
+
+        .set-badge.main-set {
+            background: rgba(0, 217, 255, 0.2);
+            color: #00d9ff;
+        }
+
+        .set-badge.sub-set {
+            background: rgba(255, 107, 157, 0.2);
+            color: #ff6b9d;
+        }
+
+        .agent-slots {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .slot-item {
+            background: rgba(255,255,255,0.05);
+            padding: 8px;
+            border-radius: 6px;
+        }
+
+        .slot-label {
+            font-size: 0.75rem;
+            color: #888;
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .slot-value {
+            font-size: 0.85rem;
+            color: #ccc;
+        }
+
+        .stat-option {
+            display: inline;
+        }
+
+        .stat-single {
+            color: #00d9ff;
+        }
+
+        .agent-substats {
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .substat-label {
+            margin-right: 5px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #888;
+            font-size: 1.1rem;
+        }
+
+        /* 表单模态框 */
+        .agent-form-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s;
+        }
+
+        .agent-form-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .agent-form-container {
+            background: #1a1a2e;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid #333;
+            transform: scale(0.95);
+            transition: transform 0.2s;
+        }
+
+        .agent-form-overlay.visible .agent-form-container {
+            transform: scale(1);
+        }
+
+        .agent-form-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #333;
+        }
+
+        .form-title {
+            font-size: 1.2rem;
+            color: #fff;
+        }
+
+        .btn-close {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .btn-close:hover {
+            color: #fff;
+        }
+
+        .agent-form {
+            padding: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 10px 12px;
+            border: 2px solid #333;
+            border-radius: 6px;
+            background: #0d0d1a;
+            color: #fff;
+            font-size: 0.95rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #00d9ff;
+        }
+
+        .form-section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 0.95rem;
+            color: #00d9ff;
+            margin-bottom: 10px;
+        }
+
+        .section-title .hint {
+            color: #888;
+            font-weight: normal;
+            font-size: 0.85rem;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .checkbox-label:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .checkbox-label input {
+            accent-color: #00d9ff;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            padding-top: 15px;
+            border-top: 1px solid #333;
+        }
+
+        /* 确认对话框 */
+        .confirm-dialog-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s;
+        }
+
+        .confirm-dialog-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .confirm-dialog {
+            background: #1a1a2e;
+            border-radius: 12px;
+            padding: 25px;
+            width: 90%;
+            max-width: 400px;
+            border: 1px solid #333;
+            transform: scale(0.95);
+            transition: transform 0.2s;
+        }
+
+        .confirm-dialog-overlay.visible .confirm-dialog {
+            transform: scale(1);
+        }
+
+        .confirm-dialog-title {
+            font-size: 1.1rem;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .confirm-dialog-message {
+            color: #888;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .confirm-dialog-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
         footer {
             text-align: center;
             margin-top: 40px;
@@ -253,34 +754,157 @@
             color: #666;
             font-size: 0.85rem;
         }
+
+        /* 未保存提醒横幅 */
+        .unsaved-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(90deg, #ff6b9d, #ff8e47);
+            color: #fff;
+            z-index: 9999;
+            box-shadow: 0 4px 20px rgba(255, 107, 157, 0.4);
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .banner-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .banner-icon {
+            font-size: 1.3rem;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .banner-text {
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .banner-action {
+            background: #fff;
+            color: #ff6b9d;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .banner-action:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .banner-close {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0 8px;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+            margin-left: auto;
+        }
+
+        .banner-close:hover {
+            opacity: 1;
+        }
+
+        /* 当横幅显示时，为导航栏添加顶部间距 */
+        body.has-unsaved-banner .navbar {
+            padding-top: 50px;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .nav-actions {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .agent-slots {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>绝区零驱动盘分析器</h1>
-            <p class="subtitle">ZZZ Drive Disc Analyzer</p>
-        </header>
-        
-        <div class="controls">
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="搜索套装或代理人...">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <h1>绝区零驱动盘分析器</h1>
+                <span class="subtitle">ZZZ Drive Disc Analyzer</span>
             </div>
-            <div class="mode-toggle">
-                <button id="modeUsed" class="active">正向统计</button>
-                <button id="modeInverse">反选分析</button>
+            <div class="nav-links">
+                <div class="mode-toggle">
+                    <button data-mode="stats" class="active">查看统计</button>
+                    <button data-mode="edit">编辑配置</button>
+                </div>
+            </div>
+            <div class="nav-actions">
+                <button class="btn btn-secondary" id="importBtn">导入 CSV</button>
+                <button class="btn btn-primary" id="saveBtn">保存</button>
+            </div>
+        </nav>
+
+        <!-- 未保存提醒栏 -->
+        <div id="unsavedBanner" class="unsaved-banner" style="display: none;">
+            <div class="banner-content">
+                <span class="banner-icon">⚠️</span>
+                <span class="banner-text">您有未保存的更改，刷新页面会丢失数据</span>
+                <button class="banner-action" id="saveNowBtn">立即保存</button>
+                <button class="banner-close" id="dismissBannerBtn">&times;</button>
             </div>
         </div>
-        
-        <div class="stats-overview" id="statsOverview"></div>
-        
-        <div class="sets-grid" id="setsGrid"></div>
-        
+
+        <div id="pageContainer"></div>
+
         <footer>
             数据来源: zenlesszonezero.csv | 截至版本: 微光引灯时
         </footer>
     </div>
-    
+
     <script type="module" src="dist/app.js"></script>
 </body>
 </html>

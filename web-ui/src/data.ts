@@ -1,7 +1,8 @@
 import type { Agent, SetVariables, StandardOrder, AllPossibleStats } from './types.js';
 
-// 原始数据（从CSV转换）
-export const agentData: Agent[] = [
+// 代理人数据（运行时从 CSV 加载）
+// 保留静态数据作为默认/备份
+const defaultAgentData: Agent[] = [
     { agent: "叶瞬光", id: 1687, mainSet: "沧浪行歌", subSet: "折枝剑歌", slot4: "暴击伤害", slot5: "物", slot6: "攻击力%", subHigh: "暴击伤害", subMid: "攻击力%", subNormal: "暴击率", subLow: "穿透值" },
     { agent: "照", id: 1686, mainSet: "静听嘉音", subSet: "云岿如我", slot4: "生命值%", slot5: "生命值%", slot6: "生命值%/能量自动回复", subHigh: "生命值%", subMid: "生命值", subNormal: "", subLow: "" },
     { agent: "般岳", id: 1626, mainSet: "云岿如我", subSet: "折枝剑歌", slot4: "暴击率", slot5: "火", slot6: "生命值%", subHigh: "生命值%", subMid: "暴击率", subNormal: "暴击伤害", subLow: "" },
@@ -94,3 +95,39 @@ export const allPossibleStats: AllPossibleStats = {
     slot6: ['攻击力%', '暴击伤害', '暴击率', '生命值%', '防御力%', '冲击力', '异常掌握', '能量自动回复'],
     subStats: ['生命值', '生命值%', '攻击力', '攻击力%', '防御力', '防御力%', '穿透值', '暴击率', '暴击伤害', '异常精通']
 };
+
+// 套装名称列表
+export const setNames = Object.keys(setVariables);
+
+// 动态代理人数据（运行时从 CSV 加载）
+let _agentData: Agent[] = defaultAgentData;
+
+/**
+ * 获取代理人数据
+ */
+export function getAgentData(): Agent[] {
+    return _agentData;
+}
+
+/**
+ * 设置代理人数据（从 CSV 加载后调用）
+ */
+export function setAgentData(agents: Agent[]): void {
+    _agentData = agents;
+}
+
+// 兼容性导出：agentData 引用 getAgentData() 的返回值
+// 注意：直接导入 agentData 的代码需要改为调用 getAgentData()
+export const agentData = new Proxy([] as Agent[], {
+    get(target, prop) {
+        const data = _agentData;
+        if (prop === 'length') return data.length;
+        if (typeof prop === 'string' && !isNaN(Number(prop))) {
+            return data[Number(prop)];
+        }
+        if (typeof prop === 'symbol' && prop === Symbol.iterator) {
+            return data[Symbol.iterator].bind(data);
+        }
+        return (data as unknown as Record<string | symbol, unknown>)[prop];
+    }
+});

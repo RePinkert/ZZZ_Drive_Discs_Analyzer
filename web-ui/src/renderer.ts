@@ -1,6 +1,6 @@
 import type { SetStats, AnalysisMode, SlotType } from './types.js';
 import { sortByStandardOrder, getAllPossibleStats } from './utils.js';
-import { agentData } from './data.js';
+import { getAgentData } from './data.js';
 
 /**
  * 渲染统计概览
@@ -12,7 +12,7 @@ import { agentData } from './data.js';
 export function renderOverview(totalSets: number, usedSets: number, currentMode: AnalysisMode): string {
     return `
         <div class="stat-card">
-            <div class="number">${agentData.length}</div>
+            <div class="number">${getAgentData().length}</div>
             <div class="label">代理人</div>
         </div>
         <div class="stat-card">

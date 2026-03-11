@@ -79,3 +79,25 @@ export type SetVariables = Record<string, SetVariable>;
 
 /** 套装统计映射 */
 export type SetStatsMap = Record<string, SetStats>;
+
+/** 视图模式 */
+export type ViewMode = 'stats' | 'edit';
+
+/** 应用状态 */
+export interface AppState {
+    /** 代理人数据 */
+    agents: Agent[];
+    /** 文件句柄 (File System Access API) */
+    fileHandle: FileSystemFileHandle | null;
+    /** 是否有未保存的修改 */
+    isDirty: boolean;
+    /** 当前视图模式 */
+    viewMode: ViewMode;
+    /** 当前编辑的代理人ID */
+    editingAgentId: number | null;
+    /** 新增但未保存的代理人ID集合 */
+    newAgentIds: Set<number>;
+}
+
+/** 状态变更监听器 */
+export type StateChangeListener = (state: AppState) => void;

@@ -1,5 +1,5 @@
 import type { Agent, SetStats, SetStatsMap, SlotType } from './types.js';
-import { agentData, setVariables } from './data.js';
+import { getAgentData, setVariables } from './data.js';
 import { splitStats } from './utils.js';
 
 /**
@@ -30,7 +30,7 @@ export function analyzeSets(): SetStatsMap {
     });
 
     // 遍历代理人数据
-    agentData.forEach((agent: Agent) => {
+    getAgentData().forEach((agent: Agent) => {
         const sets: string[] = [agent.mainSet, agent.subSet];
 
         sets.forEach(setName => {

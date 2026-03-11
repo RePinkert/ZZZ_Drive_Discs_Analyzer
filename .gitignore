@@ -5,6 +5,9 @@ ref-ZZZ-Scanner/
 # 设计文档
 OCR_DESIGN.md
 
+# 开发日志 (MMDD.md 格式)
+0*.md
+
 # Web UI - Node.js
 web-ui/node_modules/
 web-ui/package-lock.json
