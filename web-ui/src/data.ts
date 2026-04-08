@@ -3,6 +3,9 @@ import type { Agent, SetVariables, StandardOrder, AllPossibleStats } from './typ
 // 代理人数据（运行时从 CSV 加载）
 // 保留静态数据作为默认/备份
 const defaultAgentData: Agent[] = [
+    { agent: "南宫羽", id: 1852, mainSet: "法厄同之歌", subSet: "山大王", slot4: "异常精通", slot5: "以太", slot6: "异常掌握", subHigh: "异常精通", subMid: "攻击力%", subNormal: "穿透值", subLow: "" },
+    { agent: "爱芮", id: 1793, mainSet: "流光咏叹", subSet: "法厄同之歌", slot4: "异常精通", slot5: "以太/穿透率", slot6: "异常掌握", subHigh: "异常精通", subMid: "攻击力%", subNormal: "穿透值", subLow: "攻击力" },
+    { agent: "千夏", id: 1791, mainSet: "月光骑士颂", subSet: "摇摆爵士", slot4: "攻击力%", slot5: "攻击力%", slot6: "能量自动回复", subHigh: "攻击力%", subMid: "攻击力", subNormal: "", subLow: "" },
     { agent: "叶瞬光", id: 1687, mainSet: "沧浪行歌", subSet: "折枝剑歌", slot4: "暴击伤害", slot5: "物", slot6: "攻击力%", subHigh: "暴击伤害", subMid: "攻击力%", subNormal: "暴击率", subLow: "穿透值" },
     { agent: "照", id: 1686, mainSet: "静听嘉音", subSet: "云岿如我", slot4: "生命值%", slot5: "生命值%", slot6: "生命值%/能量自动回复", subHigh: "生命值%", subMid: "生命值", subNormal: "", subLow: "" },
     { agent: "般岳", id: 1626, mainSet: "云岿如我", subSet: "折枝剑歌", slot4: "暴击率", slot5: "火", slot6: "生命值%", subHigh: "生命值%", subMid: "暴击率", subNormal: "暴击伤害", subLow: "" },
