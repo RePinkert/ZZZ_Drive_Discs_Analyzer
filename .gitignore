@@ -20,6 +20,12 @@ web-ui/*.tsbuildinfo
 *.swp
 *.swo
 
+# PyInstaller
+build/
+dist/
+*.spec
+!ZZZ驱动盘分析器.exe
+
 # OS
 .DS_Store
 Thumbs.db

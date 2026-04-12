@@ -1,5 +1,5 @@
 import type { SlotType, StandardOrder } from './types.js';
-import { standardOrder as stdOrder, allPossibleStats } from './data.js';
+import { standardOrder as stdOrder, getPossibleStatsBySlot } from './data.js';
 
 /**
  * 拆分多择属性
@@ -44,5 +44,5 @@ export function sortByStandardOrder(stats: string[], type: SlotType): string[] {
  * @returns 属性数组
  */
 export function getAllPossibleStats(type: SlotType): string[] {
-    return allPossibleStats[type];
+    return getPossibleStatsBySlot(type);
 }

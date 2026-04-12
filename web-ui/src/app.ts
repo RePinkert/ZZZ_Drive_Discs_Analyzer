@@ -4,7 +4,7 @@ import { csvParser } from './services/csvParser.js';
 import { fileService } from './services/fileService.js';
 import { StatsPage } from './pages/statsPage.js';
 import { EditPage } from './pages/editPage.js';
-import { getAgentData, setAgentData } from './data.js';
+import { getAgentData, setAgentData, initAllPossibleStats } from './data.js';
 import { confirm } from './components/confirmDialog.js';
 
 /**
@@ -33,6 +33,18 @@ class DriveDiscAnalyzer {
         this.createNavigation();
         this.bindEvents();
         this.initDefaultView();
+    }
+
+    /**
+     * 异步初始化
+     */
+    async init(): Promise<void> {
+        // 加载所有可能的属性（从 zenlesszonezero1.csv）
+        await initAllPossibleStats();
+        // 刷新统计页面以使用新的属性列表
+        if (this.statsPage) {
+            this.statsPage.refresh();
+        }
     }
 
     /**
@@ -233,8 +245,9 @@ class DriveDiscAnalyzer {
 }
 
 // 启动应用
-document.addEventListener('DOMContentLoaded', () => {
-    new DriveDiscAnalyzer();
+document.addEventListener('DOMContentLoaded', async () => {
+    const app = new DriveDiscAnalyzer();
+    await app.init();
 });
 
 export { DriveDiscAnalyzer };

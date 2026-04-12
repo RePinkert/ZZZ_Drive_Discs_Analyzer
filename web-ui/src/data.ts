@@ -1,4 +1,5 @@
-import type { Agent, SetVariables, StandardOrder, AllPossibleStats } from './types.js';
+import type { Agent, SetVariables, StandardOrder, AllPossibleStats, SlotType } from './types.js';
+import { loadAllPossibleStatsFromCSV } from './services/setVariablesLoader.js';
 
 // 代理人数据（运行时从 CSV 加载）
 // 保留静态数据作为默认/备份
@@ -87,15 +88,50 @@ export const setVariables: SetVariables = {
 export const standardOrder: StandardOrder = {
     slot4: ['攻击力%', '暴击伤害', '暴击率', '生命值%', '防御力%', '异常精通'],
     slot5: ['攻击力%', '生命值%', '防御力%', '穿透率', '物', '火', '冰', '电', '以太'],
-    slot6: ['攻击力%', '暴击伤害', '暴击率', '生命值%', '防御力%', '冲击力', '异常掌握', '能量自动回复'],
+    slot6: ['攻击力%', '生命值%', '防御力%', '冲击力', '异常掌握', '能量自动回复'],
     subStats: ['生命值', '生命值%', '攻击力', '攻击力%', '防御力', '防御力%', '穿透值', '暴击率', '暴击伤害', '异常精通']
 };
 
-// 所有可选主属性
+// 动态加载所有可能的属性（从 zenlesszonezero1.csv）
+let _allPossibleStats: AllPossibleStats | null = null;
+
+/**
+ * 初始化：从 CSV 加载所有可能的属性
+ */
+export async function initAllPossibleStats(): Promise<void> {
+    if (!_allPossibleStats) {
+        _allPossibleStats = await loadAllPossibleStatsFromCSV();
+    }
+}
+
+/**
+ * 获取所有可能的属性列表
+ */
+export function getAllPossibleStats(): AllPossibleStats {
+    if (!_allPossibleStats) {
+        console.warn('所有可能属性尚未初始化，返回默认值');
+        return {
+            slot4: ['攻击力%', '暴击伤害', '暴击率', '生命值%', '防御力%', '异常精通'],
+            slot5: ['攻击力%', '生命值%', '防御力%', '穿透率', '物', '火', '冰', '电', '以太'],
+            slot6: ['攻击力%', '生命值%', '防御力%', '冲击力', '异常掌握', '能量自动回复'],
+            subStats: ['生命值', '生命值%', '攻击力', '攻击力%', '防御力', '防御力%', '穿透值', '暴击率', '暴击伤害', '异常精通']
+        };
+    }
+    return _allPossibleStats;
+}
+
+/**
+ * 获取指定槽位的所有可能属性
+ */
+export function getPossibleStatsBySlot(slotType: SlotType): string[] {
+    return getAllPossibleStats()[slotType];
+}
+
+// 向后兼容的导出（已弃用，建议使用 getAllPossibleStats() 函数）
 export const allPossibleStats: AllPossibleStats = {
     slot4: ['攻击力%', '暴击伤害', '暴击率', '生命值%', '防御力%', '异常精通'],
     slot5: ['攻击力%', '生命值%', '防御力%', '穿透率', '物', '火', '冰', '电', '以太'],
-    slot6: ['攻击力%', '暴击伤害', '暴击率', '生命值%', '防御力%', '冲击力', '异常掌握', '能量自动回复'],
+    slot6: ['攻击力%', '生命值%', '防御力%', '冲击力', '异常掌握', '能量自动回复'],
     subStats: ['生命值', '生命值%', '攻击力', '攻击力%', '防御力', '防御力%', '穿透值', '暴击率', '暴击伤害', '异常精通']
 };
 
