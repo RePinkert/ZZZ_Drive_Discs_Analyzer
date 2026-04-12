@@ -1,7 +1,7 @@
 <h1 align="center">ZZZ Drive Discs Analyzer</h1>
 <h3 align="center">绝区零 · 驱动盘分析器</h3>
 <p align="center">
-<img src="https://img.shields.io/badge/版本-2.7-FF6B6B?style=flat-square" alt="version" />
+<img src="https://img.shields.io/badge/版本-2.7.1-FF6B6B?style=flat-square" alt="version" />
 <img src="https://img.shields.io/badge/英雄不死于往昔-FF6B6B?style=flat-square" alt="ver-name" />
 <img src="https://img.shields.io/badge/Python-3.x-3776AB?style=flat-square&logo=python" alt="python" />
 <img src="https://img.shields.io/badge/TypeScript-5.9-3178C6?style=flat-square&logo=typescript" alt="typescript" />
@@ -23,17 +23,19 @@
 
 ### v2.7.1 - 2026-04-12
 
-**Web UI 修复：**
-- 修复反选分析显示不可能出现的6号位主属性的问题
-- 新增 `setVariablesLoader.ts` 服务，从 `zenlesszonezero1.csv` 动态加载所有可能的属性
-- 反选分析现在基于实际CSV数据计算，不再使用硬编码的属性列表
-- 优化属性收集逻辑，正确处理CSV中空值的情况
+**桌面应用：**
+- 首个桌面版发布，[下载 `ZZZ驱动盘分析器.exe`](https://github.com/RePinkert/ZZZ_Drive_Discs_Analyzer/releases/tag/v2.7.1)
+
+**修复：**
+- 修复反选分析中6号位显示不存在的暴击伤害/暴击率主词条
+- 修复 CSV 属性加载因 HTTP 404 未正确降级的问题（`fetch` 不抛异常导致 fallback 路径永远不触发）
+- 修复打包后 exe 资源路径未指向 `_MEIPASS` 导致无法加载 CSV 和 web-ui 文件
 
 ## 项目启动
 
 ### 桌面应用（推荐）
 
-下载 `ZZZ驱动盘分析器.exe`，双击即可运行。基于 pywebview 的原生窗口，无需安装任何依赖。
+[**⬇ 下载最新版本**](https://github.com/RePinkert/ZZZ_Drive_Discs_Analyzer/releases/latest)，双击 `ZZZ驱动盘分析器.exe` 即可运行。基于 pywebview 的原生窗口，无需安装任何依赖。
 
 ### 命令行工具
 
@@ -83,7 +85,7 @@ npm install && npm run build
 ```
 ZZZ_Drive_Discs_Analyzer/
 │
-├── 📦 ZZZ驱动盘分析器.exe          # 桌面应用（单文件，无需依赖）
+├── 📦 ZZZ驱动盘分析器.exe          # 桌面应用（见 [Releases](https://github.com/RePinkert/ZZZ_Drive_Discs_Analyzer/releases/latest)）
 ├── 📄 zenlesszonezero.csv          # 代理人配装数据 (56条)
 ├── 📄 zenlesszonezero1.csv         # 驱动盘变量表 (24套)
 │
