@@ -5,15 +5,8 @@ import type { AllPossibleStats, SetVariable } from '../types.js';
  */
 export async function loadAllPossibleStatsFromCSV(): Promise<AllPossibleStats> {
     try {
-        // 尝试从不同路径加载CSV（兼容开发环境和打包后的exe环境）
-        let response: Response;
-        try {
-            response = await fetch('zenlesszonezero1.csv');
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        } catch {
-            response = await fetch('../zenlesszonezero1.csv');
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        }
+        const response = await fetch('zenlesszonezero1.csv');
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const csvText = await response.text();
         return parseSetVariablesCSV(csvText);
     } catch (error) {
