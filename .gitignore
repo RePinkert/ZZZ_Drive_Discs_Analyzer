@@ -11,8 +11,8 @@ OCR_DESIGN.md
 # Web UI - Node.js
 web-ui/node_modules/
 web-ui/package-lock.json
-web-ui/dist/
 web-ui/*.tsbuildinfo
+web-ui/TODO.md
 
 # IDE
 .vscode/

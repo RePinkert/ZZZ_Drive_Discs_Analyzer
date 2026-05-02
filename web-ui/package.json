@@ -5,6 +5,7 @@
   "main": "dist/app.js",
   "type": "module",
   "scripts": {
+    "dev": "npx serve -l 3000 -s",
     "build": "tsc",
     "watch": "tsc --watch",
     "clean": "rm -rf dist"
