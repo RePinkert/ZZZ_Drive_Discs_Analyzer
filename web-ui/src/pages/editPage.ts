@@ -32,7 +32,7 @@ export class EditPage {
                 </div>
                 <button class="btn btn-primary" id="addAgentBtn">+ 新增代理人</button>
             </div>
-            <div class="agents-list" id="agentsList"></div>
+            <div class="agents-list-container" id="agentsList"></div>
         `;
 
         this.searchInput = container.querySelector('#agentSearch') as HTMLInputElement;
@@ -89,6 +89,18 @@ export class EditPage {
      */
     private renderList(): void {
         const query = this.searchInput.value.toLowerCase();
+
+        if (this.agents.length === 0) {
+            this.agentsList.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-state-icon">\u{1F4CB}</div>
+                    <div class="empty-state-text">还没有代理人数据</div>
+                    <div class="empty-state-hint">点击「+ 新增代理人」添加，或「导入 CSV」加载数据</div>
+                </div>
+            `;
+            return;
+        }
+
         const filtered = query
             ? this.agents.filter(a =>
                 a.agent.toLowerCase().includes(query) ||
@@ -97,7 +109,24 @@ export class EditPage {
             )
             : this.agents;
 
+        if (filtered.length === 0) {
+            this.agentsList.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-state-icon">\u{1F50D}</div>
+                    <div class="empty-state-text">没有找到匹配「${this.escapeHtml(query)}」的代理人</div>
+                    <div class="empty-state-hint">尝试其他关键词</div>
+                </div>
+            `;
+            return;
+        }
+
         this.agentsList.innerHTML = AgentCard.renderList(filtered);
+    }
+
+    private escapeHtml(text: string): string {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
     }
 
     /**

@@ -126,9 +126,26 @@ export class StatsPage {
                 filteredSets.some(([n]) => n === name)
             );
 
+        if (sortedSets.length === 0 && searchQuery) {
+            this.setsGridEl.innerHTML = `
+                <div class="empty-state" style="grid-column: 1 / -1;">
+                    <div class="empty-state-icon">\u{1F50D}</div>
+                    <div class="empty-state-text">没有找到匹配「${this.escapeHtml(searchQuery)}」的套装或代理人</div>
+                    <div class="empty-state-hint">尝试其他关键词</div>
+                </div>
+            `;
+            return;
+        }
+
         this.setsGridEl.innerHTML = sortedSets
             .map(([setName, stats]) => renderSetCard(setName, stats, isInverse))
             .join('');
+    }
+
+    private escapeHtml(text: string): string {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
     }
 
     /**
