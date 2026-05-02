@@ -27,27 +27,6 @@ def 统计套装属性():
                 排序后的列表.append(属性)
         return 排序后的列表
     
-    # 读取zenlesszonezero1.csv文件
-    套装变量表 = pd.read_csv('zenlesszonezero1.csv')
-    套装字典 = {}
-    
-    # 构建套装字典，存储每个套装的主属性和副属性
-    for _, row in 套装变量表.iterrows():
-        套装名称 = row['套装变量']
-        主属性 = {
-            '1号位': row['1号位'],
-            '2号位': row['2号位'],
-            '3号位': row['3号位'],
-            '4号位': row['4号位'],
-            '5号位': row['5号位'],
-            '6号位': row['6号位']
-        }
-        副属性 = row['副属性变量']
-        套装字典[套装名称] = {
-            '主属性': 主属性,
-            '副属性': 副属性
-        }
-    
     # 读取zenlesszonezero.csv文件
     数据表 = pd.read_csv('zenlesszonezero.csv')
     

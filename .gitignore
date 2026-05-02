@@ -20,6 +20,9 @@ web-ui/TODO.md
 *.swp
 *.swo
 
+# Python
+__pycache__/
+
 # PyInstaller
 build/
 dist/

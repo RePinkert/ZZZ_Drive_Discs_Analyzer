@@ -1,5 +1,5 @@
 import type { Agent, SetStats, SetStatsMap, SlotType } from './types.js';
-import { getAgentData, setVariables } from './data.js';
+import { getAgentData, getSetNames } from './data.js';
 import { splitStats } from './utils.js';
 
 /**
@@ -25,7 +25,7 @@ export function analyzeSets(): SetStatsMap {
     const setStats: SetStatsMap = {};
 
     // 初始化所有套装
-    Object.keys(setVariables).forEach(setName => {
+    getSetNames().forEach(setName => {
         setStats[setName] = createEmptySetStats();
     });
 

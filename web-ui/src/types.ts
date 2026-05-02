@@ -26,18 +26,6 @@ export interface Agent {
     subLow: string;
 }
 
-/** 套装变量配置 */
-export interface SetVariable {
-    /** 4号位可用属性 */
-    slot4: string[];
-    /** 5号位可用属性 */
-    slot5: string[];
-    /** 6号位可用属性 */
-    slot6: string[];
-    /** 相关副属性 */
-    subStats: string[];
-}
-
 /** 套装统计数据 */
 export interface SetStats {
     /** 4号位使用的属性集合 */
@@ -73,9 +61,6 @@ export interface AllPossibleStats {
     slot6: string[];
     subStats: string[];
 }
-
-/** 套装变量映射 */
-export type SetVariables = Record<string, SetVariable>;
 
 /** 套装统计映射 */
 export type SetStatsMap = Record<string, SetStats>;

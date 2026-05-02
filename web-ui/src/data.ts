@@ -1,8 +1,6 @@
-import type { Agent, SetVariables, StandardOrder, AllPossibleStats, SlotType } from './types.js';
-import { loadAllPossibleStatsFromCSV } from './services/setVariablesLoader.js';
+import type { Agent, StandardOrder, AllPossibleStats, SlotType } from './types.js';
+import { loadSlotAttributes, loadSetRegistry } from './services/setVariablesLoader.js';
 
-// 代理人数据（运行时从 CSV 加载）
-// 保留静态数据作为默认/备份
 const defaultAgentData: Agent[] = [
     { agent: "南宫羽", id: 1852, mainSet: "法厄同之歌", subSet: "山大王", slot4: "异常精通", slot5: "以太", slot6: "异常掌握", subHigh: "异常精通", subMid: "攻击力%", subNormal: "穿透值", subLow: "" },
     { agent: "爱芮", id: 1793, mainSet: "流光咏叹", subSet: "法厄同之歌", slot4: "异常精通", slot5: "以太/穿透率", slot6: "异常掌握", subHigh: "异常精通", subMid: "攻击力%", subNormal: "穿透值", subLow: "攻击力" },
@@ -56,35 +54,6 @@ const defaultAgentData: Agent[] = [
     { agent: "莱卡恩", id: 65, mainSet: "山大王", subSet: "震星迪斯科", slot4: "暴击率", slot5: "冰/攻击力%", slot6: "冲击力", subHigh: "暴击率", subMid: "暴击伤害", subNormal: "攻击力%", subLow: "" }
 ];
 
-// 套装变量数据
-export const setVariables: SetVariables = {
-    "獠牙重金属": { slot4: ["攻击力%"], slot5: ["攻击力%"], slot6: ["攻击力%"], subStats: ["生命值"] },
-    "激素朋克": { slot4: ["生命值%"], slot5: ["生命值%"], slot6: ["生命值%"], subStats: ["生命值%"] },
-    "震星迪斯科": { slot4: ["防御力%"], slot5: ["防御力%"], slot6: ["防御力%"], subStats: ["攻击力"] },
-    "雷暴重金属": { slot4: ["暴击率"], slot5: ["穿透率"], slot6: ["异常掌握"], subStats: ["攻击力%"] },
-    "极地重金属": { slot4: ["暴击伤害"], slot5: ["物"], slot6: ["冲击力"], subStats: ["防御力"] },
-    "自由蓝调": { slot4: ["异常精通"], slot5: ["火"], slot6: ["能量自动回复"], subStats: ["防御力%"] },
-    "炎狱重金属": { slot4: [], slot5: ["冰"], slot6: [], subStats: ["穿透值"] },
-    "河豚电音": { slot4: [], slot5: ["电"], slot6: [], subStats: ["暴击率"] },
-    "摇摆爵士": { slot4: [], slot5: ["以太"], slot6: [], subStats: ["暴击伤害"] },
-    "啄木鸟电音": { slot4: [], slot5: [], slot6: [], subStats: ["异常精通"] },
-    "灵魂摇滚": { slot4: [], slot5: [], slot6: [], subStats: [] },
-    "混沌重金属": { slot4: [], slot5: [], slot6: [], subStats: [] },
-    "原始朋克": { slot4: [], slot5: [], slot6: [], subStats: [] },
-    "混沌爵士": { slot4: [], slot5: [], slot6: [], subStats: [] },
-    "折枝剑歌": { slot4: [], slot5: [], slot6: [], subStats: [] },
-    "静听嘉音": { slot4: [], slot5: [], slot6: [], subStats: [] },
-    "如影相随": { slot4: [], slot5: [], slot6: [], subStats: [] },
-    "法厄同之歌": { slot4: [], slot5: [], slot6: [], subStats: [] },
-    "山大王": { slot4: [], slot5: [], slot6: [], subStats: [] },
-    "云岿如我": { slot4: [], slot5: [], slot6: [], subStats: [] },
-    "月光骑士颂": { slot4: [], slot5: [], slot6: [], subStats: [] },
-    "拂晓生花": { slot4: [], slot5: [], slot6: [], subStats: [] },
-    "流光咏叹": { slot4: [], slot5: [], slot6: [], subStats: [] },
-    "沧浪行歌": { slot4: [], slot5: [], slot6: [], subStats: [] }
-};
-
-// 标准属性顺序
 export const standardOrder: StandardOrder = {
     slot4: ['攻击力%', '暴击伤害', '暴击率', '生命值%', '防御力%', '异常精通'],
     slot5: ['攻击力%', '生命值%', '防御力%', '穿透率', '物', '火', '冰', '电', '以太'],
@@ -92,24 +61,21 @@ export const standardOrder: StandardOrder = {
     subStats: ['生命值', '生命值%', '攻击力', '攻击力%', '防御力', '防御力%', '穿透值', '暴击率', '暴击伤害', '异常精通']
 };
 
-// 动态加载所有可能的属性（从 zenlesszonezero1.csv）
 let _allPossibleStats: AllPossibleStats | null = null;
+let _setNames: string[] | null = null;
 
-/**
- * 初始化：从 CSV 加载所有可能的属性
- */
 export async function initAllPossibleStats(): Promise<void> {
-    if (!_allPossibleStats) {
-        _allPossibleStats = await loadAllPossibleStatsFromCSV();
-    }
+    const [stats, names] = await Promise.all([
+        loadSlotAttributes(),
+        loadSetRegistry()
+    ]);
+    _allPossibleStats = stats;
+    _setNames = names;
 }
 
-/**
- * 获取所有可能的属性列表
- */
 export function getAllPossibleStats(): AllPossibleStats {
     if (!_allPossibleStats) {
-        console.warn('所有可能属性尚未初始化，返回默认值');
+        console.warn('属性池尚未初始化，返回默认值');
         return {
             slot4: ['攻击力%', '暴击伤害', '暴击率', '生命值%', '防御力%', '异常精通'],
             slot5: ['攻击力%', '生命值%', '防御力%', '穿透率', '物', '火', '冰', '电', '以太'],
@@ -120,43 +86,33 @@ export function getAllPossibleStats(): AllPossibleStats {
     return _allPossibleStats;
 }
 
-/**
- * 获取指定槽位的所有可能属性
- */
+export function getSetNames(): string[] {
+    if (!_setNames) {
+        console.warn('套装列表尚未初始化，返回默认值');
+        return [
+            '獠牙重金属', '激素朋克', '震星迪斯科', '雷暴重金属', '极地重金属', '自由蓝调',
+            '炎狱重金属', '河豚电音', '摇摆爵士', '啄木鸟电音', '灵魂摇滚', '混沌重金属',
+            '原始朋克', '混沌爵士', '折枝剑歌', '静听嘉音', '如影相随', '法厄同之歌',
+            '山大王', '云岿如我', '月光骑士颂', '拂晓生花', '流光咏叹', '沧浪行歌'
+        ];
+    }
+    return _setNames;
+}
+
 export function getPossibleStatsBySlot(slotType: SlotType): string[] {
     return getAllPossibleStats()[slotType];
 }
 
-// 向后兼容的导出（已弃用，建议使用 getAllPossibleStats() 函数）
-export const allPossibleStats: AllPossibleStats = {
-    slot4: ['攻击力%', '暴击伤害', '暴击率', '生命值%', '防御力%', '异常精通'],
-    slot5: ['攻击力%', '生命值%', '防御力%', '穿透率', '物', '火', '冰', '电', '以太'],
-    slot6: ['攻击力%', '生命值%', '防御力%', '冲击力', '异常掌握', '能量自动回复'],
-    subStats: ['生命值', '生命值%', '攻击力', '攻击力%', '防御力', '防御力%', '穿透值', '暴击率', '暴击伤害', '异常精通']
-};
-
-// 套装名称列表
-export const setNames = Object.keys(setVariables);
-
-// 动态代理人数据（运行时从 CSV 加载）
 let _agentData: Agent[] = defaultAgentData;
 
-/**
- * 获取代理人数据
- */
 export function getAgentData(): Agent[] {
     return _agentData;
 }
 
-/**
- * 设置代理人数据（从 CSV 加载后调用）
- */
 export function setAgentData(agents: Agent[]): void {
     _agentData = agents;
 }
 
-// 兼容性导出：agentData 引用 getAgentData() 的返回值
-// 注意：直接导入 agentData 的代码需要改为调用 getAgentData()
 export const agentData = new Proxy([] as Agent[], {
     get(target, prop) {
         const data = _agentData;

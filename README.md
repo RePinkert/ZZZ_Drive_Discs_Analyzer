@@ -87,7 +87,8 @@ ZZZ_Drive_Discs_Analyzer/
 │
 ├── 📦 ZZZ驱动盘分析器.exe          # 桌面应用（见 [Releases](https://github.com/RePinkert/ZZZ_Drive_Discs_Analyzer/releases/latest)）
 ├── 📄 zenlesszonezero.csv          # 代理人配装数据 (56条)
-├── 📄 zenlesszonezero1.csv         # 驱动盘变量表 (24套)
+├── 📄 set_registry.csv             # 套装注册表 (24套)
+├── 📄 slot_attributes.csv          # 属性池
 │
 ├── 🐍 ZZZcalculator.py             # 正向统计
 ├── 🐍 ZZZcalculator_counter.py     # 反选分析
@@ -120,16 +121,21 @@ ZZZ_Drive_Discs_Analyzer/
 | 4/5/6号位主属性 | 可多择 `/` | 暴击率/暴击伤害 |
 | 四级副属性 | 高→低优先级 | 穿透值, 暴击率, ⋯ |
 
-### zenlesszonezero1.csv — 驱动盘属性池
+### set_registry.csv — 套装注册表
 
 | 列 | 内容 |
 |---|---|
-| 套装变量 | 套装名 |
-| 1-3号位 | 固定（生命/攻击/防御） |
-| 4-6号位 | 该位置可用的主属性列表 |
-| 副属性变量 | 该套装可用的副属性列表 |
+| set | 套装名称 |
+| id | 套装编号 |
 
-**数据说明**：本CSV每列列出该位置所有可能的属性。这种格式便于维护和更新属性列表。反选分析时会从CSV中收集每列的所有非空值作为该位置的属性池，然后计算未使用的属性。
+### slot_attributes.csv — 属性池
+
+| 列 | 内容 |
+|---|---|
+| slot | 槽位（slot4/slot5/slot6/subStats） |
+| attribute | 可用属性 |
+
+**数据说明**：`slot_attributes.csv` 以长格式列出每个槽位所有可能的属性值，无空值、无歧义。`set_registry.csv` 记录所有套装名称与编号的映射。
 
 ## Web UI 开发
 

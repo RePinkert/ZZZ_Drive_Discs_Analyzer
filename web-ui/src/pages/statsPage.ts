@@ -1,5 +1,5 @@
 import type { AnalysisMode, SetStatsMap } from '../types.js';
-import { setVariables, getAgentData } from '../data.js';
+import { getSetNames, getAgentData } from '../data.js';
 import { analyzeSets, getUsedSetCount, sortSetsByAgentCount, searchSets } from '../analyzer.js';
 import { renderOverview, renderSetCard } from '../renderer.js';
 
@@ -107,7 +107,7 @@ export class StatsPage {
      */
     private renderOverview(): void {
         if (!this.allSetStats) return;
-        const totalSets = Object.keys(setVariables).length;
+        const totalSets = getSetNames().length;
         const usedSets = getUsedSetCount(this.allSetStats);
         this.statsOverviewEl.innerHTML = renderOverview(totalSets, usedSets, this.currentMode);
     }

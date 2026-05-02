@@ -1,81 +1,67 @@
-import type { AllPossibleStats, SetVariable } from '../types.js';
+import type { AllPossibleStats } from '../types.js';
 
-/**
- * 从 zenlesszonezero1.csv 的列中收集所有可能的属性
- */
-export async function loadAllPossibleStatsFromCSV(): Promise<AllPossibleStats> {
+export async function loadSlotAttributes(): Promise<AllPossibleStats> {
     try {
-        const response = await fetch('zenlesszonezero1.csv');
+        const response = await fetch('slot_attributes.csv');
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const csvText = await response.text();
-        return parseSetVariablesCSV(csvText);
+        return parseSlotAttributesCSV(csvText);
     } catch (error) {
-        console.warn('无法加载 zenlesszonezero1.csv，使用默认属性列表', error);
+        console.warn('无法加载 slot_attributes.csv，使用默认属性列表', error);
         return getDefaultAllPossibleStats();
     }
 }
 
-/**
- * 解析 zenlesszonezero1.csv，收集每列的所有非空值
- */
-function parseSetVariablesCSV(csvText: string): AllPossibleStats {
+export async function loadSetRegistry(): Promise<string[]> {
+    try {
+        const response = await fetch('set_registry.csv');
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const csvText = await response.text();
+        return parseSetRegistryCSV(csvText);
+    } catch (error) {
+        console.warn('无法加载 set_registry.csv，使用默认套装列表', error);
+        return getDefaultSetNames();
+    }
+}
+
+function parseSlotAttributesCSV(csvText: string): AllPossibleStats {
     const lines = csvText.trim().split('\n');
-    if (lines.length < 2) {
-        return getDefaultAllPossibleStats();
-    }
+    if (lines.length < 2) return getDefaultAllPossibleStats();
 
-    const headers = lines[0].split(',').map(h => h.trim());
-    
-    const slot4Index = headers.indexOf('4号位');
-    const slot5Index = headers.indexOf('5号位');
-    const slot6Index = headers.indexOf('6号位');
-    const subStatsIndex = headers.indexOf('副属性变量');
-
-    if (slot4Index === -1 || slot5Index === -1 || slot6Index === -1 || subStatsIndex === -1) {
-        console.warn('CSV 缺少必要的列，使用默认属性列表');
-        return getDefaultAllPossibleStats();
-    }
-
-    const slot4Set = new Set<string>();
-    const slot5Set = new Set<string>();
-    const slot6Set = new Set<string>();
-    const subStatsSet = new Set<string>();
+    const result: AllPossibleStats = {
+        slot4: [],
+        slot5: [],
+        slot6: [],
+        subStats: []
+    };
 
     for (let i = 1; i < lines.length; i++) {
-        const values = parseCSVLine(lines[i]);
+        const parts = lines[i].split(',').map(s => s.trim());
+        if (parts.length < 2) continue;
+        const [slot, attribute] = parts;
+        if (!slot || !attribute) continue;
 
-        if (values[slot4Index] && values[slot4Index].trim()) {
-            slot4Set.add(values[slot4Index].trim());
-        }
-        if (values[slot5Index] && values[slot5Index].trim()) {
-            slot5Set.add(values[slot5Index].trim());
-        }
-        if (values[slot6Index] && values[slot6Index].trim()) {
-            slot6Set.add(values[slot6Index].trim());
-        }
-        if (values[subStatsIndex] && values[subStatsIndex].trim()) {
-            subStatsSet.add(values[subStatsIndex].trim());
+        const key = slot as keyof AllPossibleStats;
+        if (key in result && !result[key].includes(attribute)) {
+            result[key].push(attribute);
         }
     }
 
-    return {
-        slot4: Array.from(slot4Set),
-        slot5: Array.from(slot5Set),
-        slot6: Array.from(slot6Set),
-        subStats: Array.from(subStatsSet)
-    };
+    return result;
 }
 
-/**
- * 解析 CSV 行（简单版本，不处理引号）
- */
-function parseCSVLine(line: string): string[] {
-    return line.split(',').map(v => v.trim());
+function parseSetRegistryCSV(csvText: string): string[] {
+    const lines = csvText.trim().split('\n');
+    if (lines.length < 2) return getDefaultSetNames();
+
+    const names: string[] = [];
+    for (let i = 1; i < lines.length; i++) {
+        const parts = lines[i].split(',').map(s => s.trim());
+        if (parts[0]) names.push(parts[0]);
+    }
+    return names.length > 0 ? names : getDefaultSetNames();
 }
 
-/**
- * 默认的所有可能属性（当无法加载 CSV 时使用）
- */
 function getDefaultAllPossibleStats(): AllPossibleStats {
     return {
         slot4: ['攻击力%', '暴击伤害', '暴击率', '生命值%', '防御力%', '异常精通'],
@@ -83,4 +69,13 @@ function getDefaultAllPossibleStats(): AllPossibleStats {
         slot6: ['攻击力%', '生命值%', '防御力%', '冲击力', '异常掌握', '能量自动回复'],
         subStats: ['生命值', '生命值%', '攻击力', '攻击力%', '防御力', '防御力%', '穿透值', '暴击率', '暴击伤害', '异常精通']
     };
+}
+
+function getDefaultSetNames(): string[] {
+    return [
+        '獠牙重金属', '激素朋克', '震星迪斯科', '雷暴重金属', '极地重金属', '自由蓝调',
+        '炎狱重金属', '河豚电音', '摇摆爵士', '啄木鸟电音', '灵魂摇滚', '混沌重金属',
+        '原始朋克', '混沌爵士', '折枝剑歌', '静听嘉音', '如影相随', '法厄同之歌',
+        '山大王', '云岿如我', '月光骑士颂', '拂晓生花', '流光咏叹', '沧浪行歌'
+    ];
 }

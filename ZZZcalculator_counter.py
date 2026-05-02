@@ -64,40 +64,27 @@ def 反选主副词条():
 
     # 读取数据
     try:
-        套装变量表 = pd.read_csv("zenlesszonezero1.csv")
+        属性池表 = pd.read_csv("slot_attributes.csv")
         数据表 = pd.read_csv("zenlesszonezero.csv").fillna("")
-        print(f"✓ 成功读取数据：{len(套装变量表)}个变量，{len(数据表)}条记录")
+        print(f"✓ 成功读取数据：{len(属性池表)}条属性，{len(数据表)}条记录")
     except Exception as e:
         print(f"❌ 读取数据失败：{e}")
         return
 
-    # 构建套装字典
-    套装字典 = {}
-    for _, row in 套装变量表.iterrows():
-        套装名称 = row["套装变量"]
-        主属性 = {
-            "1号位": row["1号位"],
-            "2号位": row["2号位"],
-            "3号位": row["3号位"],
-            "4号位": row["4号位"],
-            "5号位": row["5号位"],
-            "6号位": row["6号位"],
-        }
-        副属性 = row["副属性变量"]
-        套装字典[套装名称] = {"主属性": 主属性, "副属性": 副属性}
-
-    # 收集所有可能的属性
+    # 构建属性池
     所有主属性 = {"4号位": set(), "5号位": set(), "6号位": set()}
     所有副属性 = set()
 
-    # 从套装字典收集主属性
-    for 套装信息 in 套装字典.values():
-        for 位置, 属性值 in 套装信息["主属性"].items():
-            if 位置 in 所有主属性 and pd.notna(属性值) and str(属性值).strip():
-                所有主属性[位置].add(str(属性值))
-
-        if pd.notna(套装信息["副属性"]) and str(套装信息["副属性"]).strip():
-            所有副属性.add(str(套装信息["副属性"]))
+    slot_map = {"slot4": "4号位", "slot5": "5号位", "slot6": "6号位"}
+    for _, row in 属性池表.iterrows():
+        slot = str(row["slot"]).strip()
+        attr = str(row["attribute"]).strip()
+        if not attr:
+            continue
+        if slot in slot_map:
+            所有主属性[slot_map[slot]].add(attr)
+        elif slot == "subStats":
+            所有副属性.add(attr)
 
     # 从数据表收集实际出现的属性
     已出现组合 = {}

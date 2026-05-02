@@ -1,5 +1,5 @@
 import type { Agent } from '../types.js';
-import { setVariables, allPossibleStats, setNames } from '../data.js';
+import { getSetNames, getAllPossibleStats } from '../data.js';
 
 /**
  * 代理人编辑表单组件
@@ -104,14 +104,14 @@ export class AgentForm {
         const subSetSelect = this.container.querySelector('#subSet') as HTMLSelectElement;
 
         const setOptions = '<option value="">请选择</option>' +
-            setNames.map(name => `<option value="${name}">${name}</option>`).join('');
+            getSetNames().map(name => `<option value="${name}">${name}</option>`).join('');
 
         mainSetSelect.innerHTML = setOptions;
         subSetSelect.innerHTML = setOptions;
 
-        // 副属性选择
+        const possibleStats = getAllPossibleStats();
         const subStatOptions = '<option value="">无</option>' +
-            allPossibleStats.subStats.map(stat => `<option value="${stat}">${stat}</option>`).join('');
+            possibleStats.subStats.map(stat => `<option value="${stat}">${stat}</option>`).join('');
 
         ['subHigh', 'subMid', 'subNormal', 'subLow'].forEach(id => {
             const select = this.container.querySelector(`#${id}`) as HTMLSelectElement;
@@ -213,12 +213,10 @@ export class AgentForm {
      * 更新可选属性列表
      */
     private updateAvailableStats(): void {
-        const mainSet = (this.container.querySelector('#mainSet') as HTMLSelectElement).value;
-
-        // 根据主套装更新可选属性
-        this.renderCheckboxGroup('slot4Group', allPossibleStats.slot4);
-        this.renderCheckboxGroup('slot5Group', allPossibleStats.slot5);
-        this.renderCheckboxGroup('slot6Group', allPossibleStats.slot6);
+        const possibleStats = getAllPossibleStats();
+        this.renderCheckboxGroup('slot4Group', possibleStats.slot4);
+        this.renderCheckboxGroup('slot5Group', possibleStats.slot5);
+        this.renderCheckboxGroup('slot6Group', possibleStats.slot6);
     }
 
     /**

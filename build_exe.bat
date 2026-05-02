@@ -33,7 +33,7 @@ if errorlevel 1 (
 
 :: 打包 exe（--windowed 隐藏控制台窗口）
 echo [4/4] 打包 exe...
-python -m PyInstaller --onefile --windowed --distpath . --name "ZZZ驱动盘分析器" --add-data "web-ui\index.html;web-ui" --add-data "web-ui\dist;web-ui\dist" --add-data "zenlesszonezero1.csv;." --clean launcher.py
+python -m PyInstaller --onefile --windowed --distpath . --name "ZZZ驱动盘分析器" --add-data "web-ui\index.html;web-ui" --add-data "web-ui\dist;web-ui\dist" --add-data "web-ui\set_registry.csv;web-ui" --add-data "web-ui\slot_attributes.csv;web-ui" --add-data "set_registry.csv;." --add-data "slot_attributes.csv;." --clean launcher.py
 
 if errorlevel 1 (
     echo 错误: PyInstaller 打包失败
