@@ -842,11 +842,172 @@
             padding-top: 50px;
         }
 
-        /* 响应式 */
+        /* Toast 通知 */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        .toast {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 20px;
+            border-radius: 8px;
+            background: #1a1a2e;
+            border: 1px solid #333;
+            color: #e0e0e0;
+            font-size: 0.95rem;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            transform: translateX(120%);
+            opacity: 0;
+            transition: all 0.3s ease;
+            pointer-events: auto;
+            max-width: 400px;
+        }
+
+        .toast-visible {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .toast-exit {
+            transform: translateX(120%);
+            opacity: 0;
+        }
+
+        .toast-success {
+            border-left: 4px solid #4caf50;
+        }
+
+        .toast-success .toast-icon {
+            color: #4caf50;
+        }
+
+        .toast-error {
+            border-left: 4px solid #ff6b6b;
+        }
+
+        .toast-error .toast-icon {
+            color: #ff6b6b;
+        }
+
+        .toast-info {
+            border-left: 4px solid #00d9ff;
+        }
+
+        .toast-info .toast-icon {
+            color: #00d9ff;
+        }
+
+        .toast-icon {
+            font-size: 1.2rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .toast-message {
+            flex: 1;
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
+        .toast-close:hover {
+            color: #fff;
+        }
+
+        /* Loading 指示器 */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(26, 26, 46, 0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9998;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid #333;
+            border-top: 4px solid #00d9ff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: #e0e0e0;
+            font-size: 1rem;
+        }
+
+        /* 空状态样式增强 */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #888;
+            font-size: 1.1rem;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        .empty-state-text {
+            margin-bottom: 8px;
+        }
+
+        .empty-state-hint {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* 响应式 — 平板 */
+        @media (max-width: 1024px) {
+            .sets-grid {
+                grid-template-columns: repeat(auto-fill, minmax(min(100%, 350px), 1fr));
+            }
+
+            .agents-list-container {
+                grid-template-columns: repeat(auto-fill, minmax(min(100%, 350px), 1fr));
+            }
+        }
+
+        /* 响应式 — 手机横屏/小平板 */
         @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
             .navbar {
                 flex-direction: column;
-                gap: 15px;
+                gap: 12px;
             }
 
             .nav-links {
@@ -857,6 +1018,53 @@
             .nav-actions {
                 width: 100%;
                 justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .nav-actions .btn {
+                min-height: 44px;
+                min-width: 44px;
+            }
+
+            .nav-links .mode-toggle button {
+                padding: 12px 24px;
+                min-height: 44px;
+            }
+
+            .stats-page .controls {
+                flex-direction: column;
+            }
+
+            .stats-page .search-box {
+                min-width: unset;
+                width: 100%;
+            }
+
+            .stats-page .mode-toggle {
+                width: 100%;
+            }
+
+            .stats-page .mode-toggle button {
+                flex: 1;
+            }
+
+            .stats-overview {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .edit-page .edit-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .edit-page .search-box {
+                min-width: unset;
+                width: 100%;
+            }
+
+            .edit-page #addAgentBtn {
+                width: 100%;
+                min-height: 44px;
             }
 
             .form-row {
@@ -865,6 +1073,85 @@
 
             .agent-slots {
                 grid-template-columns: 1fr;
+            }
+
+            .agent-form-container {
+                width: 95%;
+                max-height: 95vh;
+            }
+
+            .checkbox-group {
+                gap: 6px;
+            }
+
+            .checkbox-label {
+                padding: 6px 10px;
+                font-size: 0.85rem;
+            }
+
+            .toast-container {
+                right: 10px;
+                left: 10px;
+            }
+
+            .toast {
+                max-width: 100%;
+            }
+        }
+
+        /* 响应式 — 手机竖屏 */
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .nav-brand h1 {
+                font-size: 1.3rem;
+            }
+
+            .nav-brand .subtitle {
+                display: none;
+            }
+
+            .stats-overview {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .stat-card .number {
+                font-size: 1.5rem;
+            }
+
+            .stat-card .label {
+                font-size: 0.8rem;
+            }
+
+            .set-card {
+                padding: 15px;
+            }
+
+            .agent-card {
+                padding: 12px;
+            }
+
+            .agent-card-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .agent-actions {
+                width: 100%;
+            }
+
+            .agent-actions .btn {
+                flex: 1;
+                text-align: center;
+                min-height: 44px;
+            }
+
+            .btn {
+                min-height: 44px;
             }
         }
     </style>

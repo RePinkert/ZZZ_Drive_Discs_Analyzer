@@ -6,6 +6,7 @@ import { StatsPage } from './pages/statsPage.js';
 import { EditPage } from './pages/editPage.js';
 import { getAgentData, setAgentData, initAllPossibleStats } from './data.js';
 import { confirm } from './components/confirmDialog.js';
+import { toast } from './components/toast.js';
 
 /**
  * 绝区零驱动盘分析器 - 主应用
@@ -13,8 +14,8 @@ import { confirm } from './components/confirmDialog.js';
 class DriveDiscAnalyzer {
     private statsPage: StatsPage | null = null;
     private editPage: EditPage | null = null;
+    private loadingEl: HTMLDivElement | null = null;
 
-    // DOM 元素
     private navContainer!: HTMLElement;
     private pageContainer!: HTMLElement;
     private importBtn!: HTMLButtonElement;
@@ -25,7 +26,6 @@ class DriveDiscAnalyzer {
     private dismissBannerBtn!: HTMLButtonElement;
 
     constructor() {
-        // 初始化：将默认数据加载到 store
         const defaultData = getAgentData();
         store.setAgents(defaultData);
 
@@ -35,21 +35,38 @@ class DriveDiscAnalyzer {
         this.initDefaultView();
     }
 
-    /**
-     * 异步初始化
-     */
     async init(): Promise<void> {
-        // 加载所有可能的属性（从 zenlesszonezero1.csv）
-        await initAllPossibleStats();
-        // 刷新统计页面以使用新的属性列表
-        if (this.statsPage) {
-            this.statsPage.refresh();
+        this.showLoading('正在加载数据...');
+        try {
+            await initAllPossibleStats();
+            if (this.statsPage) {
+                this.statsPage.refresh();
+            }
+        } finally {
+            this.hideLoading();
         }
     }
 
-    /**
-     * 缓存DOM元素
-     */
+    private showLoading(text: string = '处理中...'): void {
+        if (!this.loadingEl) {
+            this.loadingEl = document.createElement('div');
+            this.loadingEl.className = 'loading-overlay';
+            this.loadingEl.innerHTML = `
+                <div class="loading-spinner"></div>
+                <div class="loading-text">${text}</div>
+            `;
+        } else {
+            this.loadingEl.querySelector('.loading-text')!.textContent = text;
+        }
+        document.body.appendChild(this.loadingEl);
+    }
+
+    private hideLoading(): void {
+        if (this.loadingEl && this.loadingEl.parentNode) {
+            this.loadingEl.parentNode.removeChild(this.loadingEl);
+        }
+    }
+
     private cacheElements(): void {
         this.navContainer = document.getElementById('navContainer')!;
         this.pageContainer = document.getElementById('pageContainer')!;
@@ -156,20 +173,22 @@ class DriveDiscAnalyzer {
     private async importCSV(): Promise<void> {
         try {
             const content = await fileService.openCSV();
+            this.showLoading('正在解析数据...');
             const agents = csvParser.parse(content);
             store.setAgents(agents);
             setAgentData(agents);
             store.markSaved();
 
-            // 刷新统计页面
             if (this.statsPage) {
                 this.statsPage.refresh();
             }
 
-            console.log(`成功导入 ${agents.length} 个代理人数据`);
+            this.hideLoading();
+            toast.show(`成功导入 ${agents.length} 个代理人数据`, 'success');
         } catch (error) {
+            this.hideLoading();
             if ((error as Error).message !== '用户取消了文件选择') {
-                alert('导入失败: ' + (error as Error).message);
+                toast.show('导入失败: ' + (error as Error).message, 'error');
             }
         }
     }
@@ -184,10 +203,9 @@ class DriveDiscAnalyzer {
         try {
             await fileService.saveCSV(content);
             store.markSaved();
-            console.log('保存成功');
+            toast.show('保存成功', 'success');
         } catch (error) {
             if ((error as Error).message !== '用户取消了保存') {
-                // 尝试另存为
                 const confirmed = await confirm(
                     '保存失败',
                     '无法保存到原文件。是否另存为新文件？'
@@ -196,9 +214,9 @@ class DriveDiscAnalyzer {
                     try {
                         await fileService.saveAs(content);
                         store.markSaved();
-                        console.log('另存为成功');
+                        toast.show('另存为成功', 'success');
                     } catch (e) {
-                        alert('保存失败: ' + (e as Error).message);
+                        toast.show('保存失败: ' + (e as Error).message, 'error');
                     }
                 }
             }
