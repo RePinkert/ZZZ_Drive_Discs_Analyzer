@@ -1,5 +1,6 @@
 import type { Agent, StandardOrder, AllPossibleStats, SlotType } from './types.js';
 import { loadSlotAttributes, loadSetRegistry } from './services/setVariablesLoader.js';
+import { initImageService } from './services/imageService.js';
 
 const defaultAgentData: Agent[] = [
     { agent: "南宫羽", id: 1852, mainSet: "法厄同之歌", subSet: "山大王", slot4: "异常精通", slot5: "以太", slot6: "异常掌握", subHigh: "异常精通", subMid: "攻击力%", subNormal: "穿透值", subLow: "" },
@@ -67,7 +68,8 @@ let _setNames: string[] | null = null;
 export async function initAllPossibleStats(): Promise<void> {
     const [stats, names] = await Promise.all([
         loadSlotAttributes(),
-        loadSetRegistry()
+        loadSetRegistry(),
+        initImageService()
     ]);
     _allPossibleStats = stats;
     _setNames = names;

@@ -280,6 +280,21 @@
             font-weight: 600;
         }
 
+        .set-icon {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+
+        .set-badge-icon {
+            width: 18px;
+            height: 18px;
+            object-fit: contain;
+            vertical-align: middle;
+            margin-right: 4px;
+        }
+
         .agents-list {
             font-size: 0.85rem;
             color: #888;
@@ -443,6 +458,22 @@
         }
 
         .agent-info {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .agent-portrait {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #444;
+            flex-shrink: 0;
+        }
+
+        .agent-text {
             display: flex;
             flex-direction: column;
             gap: 2px;

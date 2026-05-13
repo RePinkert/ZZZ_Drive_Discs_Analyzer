@@ -1,6 +1,7 @@
 import type { SetStats, AnalysisMode, SlotType } from './types.js';
 import { sortByStandardOrder, getAllPossibleStats } from './utils.js';
 import { getAgentData } from './data.js';
+import { getSetImageUrl } from './services/imageService.js';
 
 /**
  * 渲染统计概览
@@ -75,7 +76,10 @@ export function renderSetCard(setName: string, stats: SetStats, isInverse: boole
     return `
         <div class="set-card" data-set="${setName}" data-agents="${Object.values(stats.agents).join(' ')}">
             <div class="set-header">
-                <span class="set-name">${setName}</span>
+                <div style="display:flex;align-items:center;gap:8px">
+                    <img class="set-icon" src="${getSetImageUrl(setName)}" alt="${setName}" onerror="this.style.display='none'">
+                    <span class="set-name">${setName}</span>
+                </div>
                 <span class="agent-count">${agentCount} 代理人</span>
             </div>
             ${agents ? `<div class="agents-list">${agents}</div>` : ''}

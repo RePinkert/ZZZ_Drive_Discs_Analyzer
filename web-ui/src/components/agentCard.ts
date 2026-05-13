@@ -1,5 +1,6 @@
 import type { Agent } from '../types.js';
 import { store } from '../state/store.js';
+import { getAgentImageUrl, getSetImageUrl } from '../services/imageService.js';
 
 /**
  * 代理人卡片组件
@@ -20,8 +21,11 @@ export class AgentCard {
             <div class="agent-card${newClass}" data-agent-id="${agent.id}">
                 <div class="agent-card-header">
                     <div class="agent-info">
-                        <span class="agent-name">${agent.agent}</span>
-                        <span class="agent-id">ID: ${agent.id}</span>
+                        <img class="agent-portrait" src="${getAgentImageUrl(agent.id)}" alt="${agent.agent}" onerror="this.style.display='none'">
+                        <div class="agent-text">
+                            <span class="agent-name">${agent.agent}</span>
+                            <span class="agent-id">ID: ${agent.id}</span>
+                        </div>
                     </div>
                     <div class="agent-actions">
                         <button class="btn btn-edit" data-action="edit" data-id="${agent.id}">编辑</button>
@@ -30,8 +34,14 @@ export class AgentCard {
                 </div>
                 <div class="agent-card-body">
                     <div class="agent-sets">
-                        <span class="set-badge main-set">${agent.mainSet}</span>
-                        <span class="set-badge sub-set">${agent.subSet}</span>
+                        <span class="set-badge main-set">
+                            <img class="set-badge-icon" src="${getSetImageUrl(agent.mainSet)}" alt="" onerror="this.style.display='none'">
+                            ${agent.mainSet}
+                        </span>
+                        <span class="set-badge sub-set">
+                            <img class="set-badge-icon" src="${getSetImageUrl(agent.subSet)}" alt="" onerror="this.style.display='none'">
+                            ${agent.subSet}
+                        </span>
                     </div>
                     <div class="agent-slots">
                         <div class="slot-item">

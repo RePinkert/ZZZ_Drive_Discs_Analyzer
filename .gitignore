@@ -22,6 +22,7 @@ web-ui/TODO.md
 
 # Python
 __pycache__/
+*.py[cod]
 
 # PyInstaller
 build/
@@ -32,3 +33,8 @@ dist/
 # OS
 .DS_Store
 Thumbs.db
+.claude/
+
+# 环境变量
+.env
+.env.*

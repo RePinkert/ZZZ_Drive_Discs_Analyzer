@@ -5,7 +5,7 @@
 <img src="https://img.shields.io/badge/英雄不死于往昔-FF6B6B?style=flat-square" alt="ver-name" />
 <img src="https://img.shields.io/badge/Python-3.x-3776AB?style=flat-square&logo=python" alt="python" />
 <img src="https://img.shields.io/badge/TypeScript-5.9-3178C6?style=flat-square&logo=typescript" alt="typescript" />
-<img src="https://img.shields.io/badge/代理人-56-FFD93D?style=flat-square" alt="agents" />
+<img src="https://img.shields.io/badge/代理人-50-FFD93D?style=flat-square" alt="agents" />
 <img src="https://img.shields.io/badge/驱动盘套装-24-6BCB77?style=flat-square" alt="sets" />
 </p>
 
@@ -50,8 +50,8 @@ python ZZZcalculator_counter.py       # 反选分析
 
 ```bash
 cd web-ui
-npm install && npm run build
-# 然后浏览器打开 index.html
+npm install
+npm run dev          # 启动本地服务器 → http://localhost:3000
 ```
 
 ## 构建 exe
@@ -86,7 +86,7 @@ npm install && npm run build
 ZZZ_Drive_Discs_Analyzer/
 │
 ├── 📦 ZZZ驱动盘分析器.exe          # 桌面应用（见 [Releases](https://github.com/RePinkert/ZZZ_Drive_Discs_Analyzer/releases/latest)）
-├── 📄 zenlesszonezero.csv          # 代理人配装数据 (56条)
+├── 📄 zenlesszonezero.csv          # 代理人配装数据 (50条)
 ├── 📄 set_registry.csv             # 套装注册表 (24套)
 ├── 📄 slot_attributes.csv          # 属性池
 │
@@ -98,12 +98,15 @@ ZZZ_Drive_Discs_Analyzer/
 │
 └── 🌐 web-ui/                      # TypeScript Web 界面
     ├── index.html
+    ├── assets/
+    │   ├── agents/      # 代理人头像
+    │   └── sets/        # 套装图标
     ├── src/
     │   ├── app.ts / analyzer.ts / renderer.ts
     │   ├── data.ts / types.ts / utils.ts
     │   ├── components/   # agentCard, agentForm, confirmDialog
     │   ├── pages/        # statsPage, editPage
-    │   ├── services/     # csvParser, fileService, setVariablesLoader
+    │   ├── services/     # csvParser, fileService, imageService, setVariablesLoader
     │   └── state/        # store
     └── dist/
 ```
@@ -142,7 +145,8 @@ ZZZ_Drive_Discs_Analyzer/
 ```bash
 cd web-ui
 npm install           # 安装依赖
-npm run build         # 编译
+npm run dev           # 启动本地开发服务器 (http://localhost:3000)
+npm run build         # 编译 TypeScript
 npm run watch         # 监听模式（开发用）
 npm run clean         # 清理编译输出
 ```
