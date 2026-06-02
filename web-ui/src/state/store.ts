@@ -10,6 +10,8 @@ export class Store {
     private state: AppState;
     private listeners: Set<StateChangeListener> = new Set();
 
+    private wasDirtyBeforeNewAgent: boolean = false;
+
     private constructor() {
         this.state = {
             agents: [],
@@ -68,6 +70,7 @@ export class Store {
         this.state.agents = [...agents];
         this.state.isDirty = false;
         this.state.newAgentIds.clear();
+        this.wasDirtyBeforeNewAgent = false;
         this.notify();
     }
 
@@ -89,6 +92,7 @@ export class Store {
      * 添加代理人
      */
     addAgent(agent: Agent): void {
+        this.wasDirtyBeforeNewAgent = this.state.isDirty;
         this.state.agents.push(agent);
         this.state.newAgentIds.add(agent.id);
         this.state.isDirty = true;
@@ -117,14 +121,11 @@ export class Store {
             this.state.agents.splice(index, 1);
             this.state.newAgentIds.delete(id);
 
-            // 只有删除已存在的代理人才需要保存
-            // 删除新增的代理人不需要保存（因为该记录从未存在于文件中）
             if (!isNew) {
                 this.state.isDirty = true;
             } else {
-                // 如果删除的是新增代理人，检查是否还有其他未保存的更改
                 if (this.state.newAgentIds.size === 0) {
-                    this.state.isDirty = false;
+                    this.state.isDirty = this.wasDirtyBeforeNewAgent;
                 }
             }
             this.notify();
@@ -162,6 +163,7 @@ export class Store {
     markSaved(): void {
         this.state.isDirty = false;
         this.state.newAgentIds.clear();
+        this.wasDirtyBeforeNewAgent = false;
         this.notify();
     }
 

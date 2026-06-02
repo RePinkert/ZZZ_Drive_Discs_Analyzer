@@ -61,7 +61,7 @@ def 统计套装属性():
         # 添加代理人（存储ID和名称的映射）
         agent_id = row['id']
         代理人 = row['Agent']
-        if 代理人 and str(代理人).strip():
+        if str(代理人).strip():
             套装统计[主套装]['代理人'][agent_id] = str(代理人).strip()
         
         # 添加所有拆分后的属性到集合中
@@ -89,7 +89,7 @@ def 统计套装属性():
                 '代理人': {}
             }
         # 添加代理人（存储ID和名称的映射）
-        if 代理人 and str(代理人).strip():
+        if str(代理人).strip():
             套装统计[辅套装]['代理人'][agent_id] = str(代理人).strip()
         
         # 添加所有拆分后的属性到集合中

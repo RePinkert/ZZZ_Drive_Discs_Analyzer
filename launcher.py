@@ -10,30 +10,28 @@ import os
 import sys
 import socket
 import threading
+from typing import Any
 
 import webview
 
 
 def find_free_port():
-    """自动寻找可用端口"""
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind(("127.0.0.1", 0))
         return s.getsockname()[1]
 
 
 def get_web_ui_path():
-    """获取 web-ui 目录路径，兼容 PyInstaller 打包和开发环境"""
     if getattr(sys, "frozen", False):
-        base_path = sys._MEIPASS
+        base_path: Any = sys._MEIPASS  # type: ignore[attr-defined]
     else:
         base_path = os.path.dirname(os.path.abspath(__file__))
     return os.path.join(base_path, "web-ui")
 
 
 def get_base_path():
-    """获取基础路径，兼容 PyInstaller 打包和开发环境"""
     if getattr(sys, "frozen", False):
-        return sys._MEIPASS
+        return sys._MEIPASS  # type: ignore[attr-defined]
     return os.path.dirname(os.path.abspath(__file__))
 
 

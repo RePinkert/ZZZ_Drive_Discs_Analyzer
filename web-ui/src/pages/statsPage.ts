@@ -1,9 +1,7 @@
 import type { AnalysisMode, SetStatsMap } from '../types.js';
-import { getSetNames, getAgentData } from '../data.js';
+import { getSetNames } from '../data.js';
 import { analyzeSets, getUsedSetCount, sortSetsByAgentCount, searchSets } from '../analyzer.js';
 import { renderOverview, renderSetCard } from '../renderer.js';
-
-import { store } from '../state/store.js';
 
 /**
  * 统计页面

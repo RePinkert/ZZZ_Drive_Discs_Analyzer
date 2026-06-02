@@ -1,4 +1,4 @@
-import type { Agent, SetStats, SetStatsMap, SlotType } from './types.js';
+import type { Agent, SetStats, SetStatsMap } from './types.js';
 import { getAgentData, getSetNames } from './data.js';
 import { splitStats } from './utils.js';
 

@@ -14,8 +14,14 @@ export function getAgentImageUrl(agentId: number): string {
 }
 
 export function getSetImageUrl(setName: string): string {
-    if (!_setIdMap) return '';
+    if (!_setIdMap) {
+        console.warn('imageService not initialized when requesting set image for:', setName);
+        return `${SET_IMG_BASE}/0.webp`;
+    }
     const id = _setIdMap[setName];
-    if (!id) return '';
+    if (!id) {
+        console.warn('No set ID mapping for:', setName);
+        return `${SET_IMG_BASE}/0.webp`;
+    }
     return `${SET_IMG_BASE}/${id}.webp`;
 }

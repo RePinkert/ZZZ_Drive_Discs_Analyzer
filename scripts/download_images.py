@@ -14,7 +14,6 @@ ZZZ Drive Discs Analyzer - 图片下载脚本
 import csv
 import html
 import json
-import os
 import re
 import sys
 import time
@@ -42,12 +41,17 @@ HHW_CHAR_PAGE = f"{HHW_BASE}/{{id}}-char/"
 
 # HHW 角色ID范围
 HHW_AGENT_ID_MIN = 1001
-HHW_AGENT_ID_MAX = 1900
+HHW_AGENT_ID_MAX = 2000
 
 SESSION = requests.Session()
 SESSION.headers.update({
-    "User-Agent": "ZZZ-Image-Downloader/1.0 (learning project)",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+    "Accept-Language": "en-US,en;q=0.5",
     "Referer": HHW_BASE,
+    "Sec-Fetch-Dest": "document",
+    "Sec-Fetch-Mode": "navigate",
+    "Sec-Fetch-Site": "same-origin",
 })
 
 
@@ -246,8 +250,8 @@ def download_set_images(sets, set_name_map):
 def main():
     # 强制 UTF-8 输出（Windows 默认 GBK 会报错）
     if sys.platform == "win32":
-        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-        sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")  # type: ignore[attr-defined]
+        sys.stderr.reconfigure(encoding="utf-8", errors="replace")  # type: ignore[attr-defined]
 
     print("ZZZ Drive Discs Analyzer - Image Downloader\n")
 
@@ -288,7 +292,7 @@ def main():
     print(f"下载完成: {total_ok}/{total} 成功, {total_fail} 失败")
     print(f"  代理人: {agent_ok}/{len(agents)}")
     print(f"  套装: {set_ok}/{len(sets)}")
-    print(f"\n输出目录:")
+    print("\n输出目录:")
     print(f"  {OUTPUT_AGENTS}")
     print(f"  {OUTPUT_SETS}")
 

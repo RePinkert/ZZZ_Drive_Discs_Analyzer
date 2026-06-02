@@ -3,6 +3,9 @@ import { loadSlotAttributes, loadSetRegistry } from './services/setVariablesLoad
 import { initImageService } from './services/imageService.js';
 
 const defaultAgentData: Agent[] = [
+    { agent: "星徽·比利·奇德", id: 1927, mainSet: "云岿如我", subSet: "折枝剑歌", slot4: "暴击率/暴击伤害", slot5: "物/生命值%", slot6: "生命值%", subHigh: "暴击伤害", subMid: "暴击率", subNormal: "生命值%", subLow: "攻击力%" },
+    { agent: "普罗米娅", id: 1926, mainSet: "囚徒手记", subSet: "法厄同之歌", slot4: "异常精通", slot5: "冰", slot6: "异常掌握", subHigh: "异常精通", subMid: "攻击力%", subNormal: "穿透值", subLow: "" },
+    { agent: "希希芙", id: 1861, mainSet: "拂晓生花", subSet: "摇摆爵士", slot4: "暴击率", slot5: "攻击力%", slot6: "能量自动回复", subHigh: "攻击力%", subMid: "暴击率", subNormal: "暴击伤害", subLow: "" },
     { agent: "南宫羽", id: 1852, mainSet: "法厄同之歌", subSet: "山大王", slot4: "异常精通", slot5: "以太", slot6: "异常掌握", subHigh: "异常精通", subMid: "攻击力%", subNormal: "穿透值", subLow: "" },
     { agent: "爱芮", id: 1793, mainSet: "流光咏叹", subSet: "法厄同之歌", slot4: "异常精通", slot5: "以太/穿透率", slot6: "异常掌握", subHigh: "异常精通", subMid: "攻击力%", subNormal: "穿透值", subLow: "攻击力" },
     { agent: "千夏", id: 1791, mainSet: "月光骑士颂", subSet: "摇摆爵士", slot4: "攻击力%", slot5: "攻击力%", slot6: "能量自动回复", subHigh: "攻击力%", subMid: "攻击力", subNormal: "", subLow: "" },
@@ -68,9 +71,9 @@ let _setNames: string[] | null = null;
 export async function initAllPossibleStats(): Promise<void> {
     const [stats, names] = await Promise.all([
         loadSlotAttributes(),
-        loadSetRegistry(),
-        initImageService()
+        loadSetRegistry()
     ]);
+    await initImageService();
     _allPossibleStats = stats;
     _setNames = names;
 }
@@ -95,7 +98,8 @@ export function getSetNames(): string[] {
             '獠牙重金属', '激素朋克', '震星迪斯科', '雷暴重金属', '极地重金属', '自由蓝调',
             '炎狱重金属', '河豚电音', '摇摆爵士', '啄木鸟电音', '灵魂摇滚', '混沌重金属',
             '原始朋克', '混沌爵士', '折枝剑歌', '静听嘉音', '如影相随', '法厄同之歌',
-            '山大王', '云岿如我', '月光骑士颂', '拂晓生花', '流光咏叹', '沧浪行歌'
+            '山大王', '云岿如我', '月光骑士颂', '拂晓生花', '流光咏叹', '沧浪行歌',
+            '囚徒手记', '雪兔梦游仙境'
         ];
     }
     return _setNames;
@@ -114,17 +118,3 @@ export function getAgentData(): Agent[] {
 export function setAgentData(agents: Agent[]): void {
     _agentData = agents;
 }
-
-export const agentData = new Proxy([] as Agent[], {
-    get(target, prop) {
-        const data = _agentData;
-        if (prop === 'length') return data.length;
-        if (typeof prop === 'string' && !isNaN(Number(prop))) {
-            return data[Number(prop)];
-        }
-        if (typeof prop === 'symbol' && prop === Symbol.iterator) {
-            return data[Symbol.iterator].bind(data);
-        }
-        return (data as unknown as Record<string | symbol, unknown>)[prop];
-    }
-});

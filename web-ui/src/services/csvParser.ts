@@ -29,10 +29,15 @@ export class CSVParser {
             return [];
         }
 
-        // 跳过头部行
+        const headerLine = lines[0].split(',').map(s => s.trim());
+        if (headerLine[0] !== 'Agent' || headerLine[1] !== 'id') {
+            console.warn('CSV header mismatch. Expected "Agent,id,..." but got:', headerLine.slice(0, 3));
+        }
+
         return lines.slice(1)
             .filter(line => line.trim())
-            .map(line => this.parseLine(line));
+            .map(line => this.parseLine(line))
+            .filter(agent => agent.id > 0);
     }
 
     /**

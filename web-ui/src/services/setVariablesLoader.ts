@@ -1,5 +1,21 @@
 import type { AllPossibleStats } from '../types.js';
 
+let _cachedSetRegistryCSV: string | null = null;
+
+async function fetchSetRegistryCSV(): Promise<string> {
+    if (_cachedSetRegistryCSV !== null) {
+        return _cachedSetRegistryCSV;
+    }
+    const response = await fetch('set_registry.csv');
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    _cachedSetRegistryCSV = await response.text();
+    return _cachedSetRegistryCSV;
+}
+
+export function clearSetRegistryCache(): void {
+    _cachedSetRegistryCSV = null;
+}
+
 export async function loadSlotAttributes(): Promise<AllPossibleStats> {
     try {
         const response = await fetch('slot_attributes.csv');
@@ -14,9 +30,7 @@ export async function loadSlotAttributes(): Promise<AllPossibleStats> {
 
 export async function loadSetRegistry(): Promise<string[]> {
     try {
-        const response = await fetch('set_registry.csv');
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const csvText = await response.text();
+        const csvText = await fetchSetRegistryCSV();
         return parseSetRegistryCSV(csvText);
     } catch (error) {
         console.warn('无法加载 set_registry.csv，使用默认套装列表', error);
@@ -64,9 +78,7 @@ function parseSetRegistryCSV(csvText: string): string[] {
 
 export async function loadSetIdMap(): Promise<Record<string, number>> {
     try {
-        const response = await fetch('set_registry.csv');
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const csvText = await response.text();
+        const csvText = await fetchSetRegistryCSV();
         return parseSetIdMapCSV(csvText);
     } catch (error) {
         console.warn('无法加载 set_registry.csv，使用默认套装ID映射', error);
@@ -93,7 +105,8 @@ function getDefaultSetIdMap(): Record<string, number> {
         '摇摆爵士': 231, '啄木鸟电音': 232, '灵魂摇滚': 233, '混沌重金属': 236,
         '原始朋克': 798, '混沌爵士': 800, '折枝剑歌': 1000, '静听嘉音': 1001,
         '如影相随': 1193, '法厄同之歌': 1194, '山大王': 1346, '云岿如我': 1347,
-        '月光骑士颂': 1551, '拂晓生花': 1552, '流光咏叹': 1750, '沧浪行歌': 1754
+        '月光骑士颂': 1551, '拂晓生花': 1552, '流光咏叹': 1750, '沧浪行歌': 1754,
+        '囚徒手记': 1906, '雪兔梦游仙境': 1907
     };
 }
 
@@ -111,6 +124,7 @@ function getDefaultSetNames(): string[] {
         '獠牙重金属', '激素朋克', '震星迪斯科', '雷暴重金属', '极地重金属', '自由蓝调',
         '炎狱重金属', '河豚电音', '摇摆爵士', '啄木鸟电音', '灵魂摇滚', '混沌重金属',
         '原始朋克', '混沌爵士', '折枝剑歌', '静听嘉音', '如影相随', '法厄同之歌',
-        '山大王', '云岿如我', '月光骑士颂', '拂晓生花', '流光咏叹', '沧浪行歌'
+        '山大王', '云岿如我', '月光骑士颂', '拂晓生花', '流光咏叹', '沧浪行歌',
+        '囚徒手记', '雪兔梦游仙境'
     ];
 }

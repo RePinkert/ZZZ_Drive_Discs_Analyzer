@@ -1,5 +1,5 @@
-import type { SlotType, StandardOrder } from './types.js';
-import { standardOrder as stdOrder, getPossibleStatsBySlot } from './data.js';
+import type { SlotType } from './types.js';
+import { standardOrder, getPossibleStatsBySlot } from './data.js';
 
 /**
  * 拆分多择属性
@@ -18,7 +18,7 @@ export function splitStats(str: string): string[] {
  * @returns 排序后的属性数组
  */
 export function sortByStandardOrder(stats: string[], type: SlotType): string[] {
-    const order = (stdOrder as StandardOrder)[type] || [];
+    const order = standardOrder[type] || [];
     const sorted: string[] = [];
 
     // 首先按标准顺序添加存在的属性

@@ -140,21 +140,6 @@ export class EditPage {
      * 显示新增表单
      */
     private showAddForm(): void {
-        const newId = store.getNextId();
-        const emptyAgent: Agent = {
-            agent: '',
-            id: newId,
-            mainSet: '',
-            subSet: '',
-            slot4: '',
-            slot5: '',
-            slot6: '',
-            subHigh: '',
-            subMid: '',
-            subNormal: '',
-            subLow: ''
-        };
-
         agentForm.show(null, (agent) => {
             store.addAgent(agent);
         });
