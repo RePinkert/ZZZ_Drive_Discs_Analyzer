@@ -1,12 +1,12 @@
 <h1 align="center">ZZZ Drive Discs Analyzer</h1>
 <h3 align="center">绝区零 · 驱动盘分析器</h3>
 <p align="center">
-<img src="https://img.shields.io/badge/版本-2.7.1-FF6B6B?style=flat-square" alt="version" />
-<img src="https://img.shields.io/badge/英雄不死于往昔-FF6B6B?style=flat-square" alt="ver-name" />
+<img src="https://img.shields.io/badge/版本-2.8.0-FF6B6B?style=flat-square" alt="version" />
+<img src="https://img.shields.io/badge/新·艾利都日落时-FF6B6B?style=flat-square" alt="ver-name" />
 <img src="https://img.shields.io/badge/Python-3.x-3776AB?style=flat-square&logo=python" alt="python" />
 <img src="https://img.shields.io/badge/TypeScript-5.9-3178C6?style=flat-square&logo=typescript" alt="typescript" />
-<img src="https://img.shields.io/badge/代理人-50-FFD93D?style=flat-square" alt="agents" />
-<img src="https://img.shields.io/badge/驱动盘套装-24-6BCB77?style=flat-square" alt="sets" />
+<img src="https://img.shields.io/badge/代理人-53-FFD93D?style=flat-square" alt="agents" />
+<img src="https://img.shields.io/badge/驱动盘套装-26-6BCB77?style=flat-square" alt="sets" />
 </p>
 
 ---
@@ -21,14 +21,34 @@
 
 ## 更新日志
 
+### v2.8.0 - 2026-06-02
+
+**数据更新（v2.8）：**
+- 新增 3 名代理人：星徽·比利·奇德、普罗米娅、希希芙（共 53 名）
+- 新增 2 套驱动盘：囚徒手记、雪兔梦游仙境（共 26 套）
+
+**图片资源：**
+- 全量替换 79 张图片（53 代理人头像 + 26 套装图标），来源统一为米游社百科
+- 代理人头像统一为 102×100 RGB webp，套装图标统一为 35×35 RGB webp
+
+**代码质量：**
+- 移除全部死代码（未使用的 Proxy 导出、未使用的变量和导入）
+- 修复 `store.deleteAgent` 脏标记逻辑缺陷（删除新增代理人后错误清除已编辑的脏标记）
+- 修复 `csvParser` 未校验 CSV header 和无效 ID 的问题
+- 修复 `imageService` 返回空字符串导致页面发送错误请求的问题
+- 优化 `setVariablesLoader` 消除重复的 `set_registry.csv` 网络请求
+- 修复全部 Pylance 类型诊断（`sys._MEIPASS`、`reconfigure`、`Series.__bool__`）
+- 修复全部 ruff lint 警告（未使用导入、多余 f-string 前缀等）
+
+**脚本：**
+- 新增 `scripts/download_images_baike.py`：基于 Playwright 的米游社百科图片下载器，支持全量/缺失模式
+- 更新 `scripts/agent_name_map.json`、`scripts/set_name_map.json` 映射表
+
 ### v2.7.1 - 2026-04-12
 
-**桌面应用：**
-- 首个桌面版发布，[下载 `ZZZ驱动盘分析器.exe`](https://github.com/RePinkert/ZZZ_Drive_Discs_Analyzer/releases/tag/v2.7.1)
-
-**修复：**
+- 首个桌面版发布
 - 修复反选分析中6号位显示不存在的暴击伤害/暴击率主词条
-- 修复 CSV 属性加载因 HTTP 404 未正确降级的问题（`fetch` 不抛异常导致 fallback 路径永远不触发）
+- 修复 CSV 属性加载因 HTTP 404 未正确降级的问题
 - 修复打包后 exe 资源路径未指向 `_MEIPASS` 导致无法加载 CSV 和 web-ui 文件
 
 ## 项目启动
@@ -46,7 +66,7 @@ python ZZZcalculator.py               # 正向统计
 python ZZZcalculator_counter.py       # 反选分析
 ```
 
-支持 Web 界面（正在开发中）：
+支持 Web 界面：
 
 ```bash
 cd web-ui
@@ -71,6 +91,14 @@ npm run dev          # 启动本地服务器 → http://localhost:3000
 
 两者均支持 `/` 分隔的多择属性自动拆分，并附带使用该套装的代理人列表。
 
+### 图片下载脚本
+
+| 脚本 | 说明 |
+|---|---|
+| `scripts/download_images_baike.py` | 从米游社百科下载图片（推荐），依赖 Playwright + Pillow |
+| `scripts/download_images.py` | 从 HoneyHunterWorld 下载（已弃用，Cloudflare 阻止） |
+| `scripts/download_images_pw.py` | HHW Playwright 版（已弃用） |
+
 ### Web UI
 
 基于 TypeScript 的浏览器端应用，无需服务器。
@@ -86,8 +114,8 @@ npm run dev          # 启动本地服务器 → http://localhost:3000
 ZZZ_Drive_Discs_Analyzer/
 │
 ├── 📦 ZZZ驱动盘分析器.exe          # 桌面应用（见 [Releases](https://github.com/RePinkert/ZZZ_Drive_Discs_Analyzer/releases/latest)）
-├── 📄 zenlesszonezero.csv          # 代理人配装数据 (50条)
-├── 📄 set_registry.csv             # 套装注册表 (24套)
+├── 📄 zenlesszonezero.csv          # 代理人配装数据 (53条)
+├── 📄 set_registry.csv             # 套装注册表 (26套)
 ├── 📄 slot_attributes.csv          # 属性池
 │
 ├── 🐍 ZZZcalculator.py             # 正向统计
@@ -96,15 +124,22 @@ ZZZ_Drive_Discs_Analyzer/
 ├── 🔧 build_exe.bat                # exe 构建脚本
 ├── 📋 requirements.txt             # pandas>=1.3.0
 │
+├── 📂 scripts/                     # 图片下载脚本 + 映射表
+│   ├── download_images_baike.py    # 米游社百科下载器（推荐）
+│   ├── download_images.py          # HHW 下载器（弃用）
+│   ├── download_images_pw.py       # HHW Playwright 版（弃用）
+│   ├── agent_name_map.json         # 代理人名称映射
+│   └── set_name_map.json           # 套装名称映射
+│
 └── 🌐 web-ui/                      # TypeScript Web 界面
     ├── index.html
     ├── assets/
-    │   ├── agents/      # 代理人头像
-    │   └── sets/        # 套装图标
+    │   ├── agents/      # 代理人头像 (102×100 webp)
+    │   └── sets/        # 套装图标 (35×35 webp)
     ├── src/
     │   ├── app.ts / analyzer.ts / renderer.ts
     │   ├── data.ts / types.ts / utils.ts
-    │   ├── components/   # agentCard, agentForm, confirmDialog
+    │   ├── components/   # agentCard, agentForm, confirmDialog, toast
     │   ├── pages/        # statsPage, editPage
     │   ├── services/     # csvParser, fileService, imageService, setVariablesLoader
     │   └── state/        # store
@@ -118,9 +153,9 @@ ZZZ_Drive_Discs_Analyzer/
 | 列 | 内容 | 示例 |
 |---|---|---|
 | Agent | 代理人名称 | 艾莲 |
-| id | 编号 | 101 |
-| 主套装(×4) | 4件套 | 云岿如我 |
-| 辅套装(×2) | 2件套 | 折枝剑歌 |
+| id | 编号 | 317 |
+| 主套装(×4) | 4件套 | 极地重金属 |
+| 辅套装(×2) | 2件套 | 啄木鸟电音 |
 | 4/5/6号位主属性 | 可多择 `/` | 暴击率/暴击伤害 |
 | 四级副属性 | 高→低优先级 | 穿透值, 暴击率, ⋯ |
 
@@ -154,5 +189,5 @@ npm run clean         # 清理编译输出
 ---
 
 <p align="center">
-<i>《绝区零》2.7版本 · 英雄不死于往昔</i>
+<i>《绝区零》2.8版本 · 新·艾利都日落时</i>
 </p>
