@@ -217,8 +217,8 @@ npm run clean         # 清理编译输出
 ### 数据与图片来源
 
 - **[米游社 (miyoushe.com)](https://www.miyoushe.com/)** — 官方社区平台，提供游戏版本公告
-- **[米游社百科 (baike.mihoyo.com)](https://baike.mihoyo.com/)** — 代理人头像、驱动盘套装图标
-- **《绝区零》(Zenless Zone Zero) — [miHoYo / HoYoverse](https://www.hoyoverse.com/)** — 原始游戏数据与角色信息
+- **[米游社百科 (baike.mihoyo.com)](https://baike.mihoyo.com/zzz/wiki/)** — 代理人头像、驱动盘套装图标
+- **《绝区零》(Zenless Zone Zero) — [miHoYo / HoYoverse](https://zzz.mihoyo.com/main/)** — 原始游戏数据与角色信息
 
 ### 字体
 
