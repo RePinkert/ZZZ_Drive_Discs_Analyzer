@@ -55,12 +55,14 @@ const defaultAgentData: Agent[] = [
     { agent: "安东", id: 147, mainSet: "雷暴重金属", subSet: "啄木鸟电音", slot4: "暴击伤害", slot5: "攻击力%", slot6: "攻击力%", subHigh: "暴击率", subMid: "暴击伤害", subNormal: "攻击力%", subLow: "攻击力" },
     { agent: "妮可", id: 80, mainSet: "摇摆爵士", subSet: "自由蓝调", slot4: "异常精通", slot5: "以太", slot6: "能量自动回复", subHigh: "异常精通", subMid: "攻击力%", subNormal: "攻击力", subLow: "穿透值" },
     { agent: "11号", id: 73, mainSet: "炎狱重金属", subSet: "激素朋克", slot4: "暴击率/暴击伤害", slot5: "火", slot6: "攻击力%", subHigh: "暴击率", subMid: "暴击伤害", subNormal: "攻击力%", subLow: "" },
-    { agent: "莱卡恩", id: 65, mainSet: "山大王", subSet: "震星迪斯科", slot4: "暴击率", slot5: "冰/攻击力%", slot6: "冲击力", subHigh: "暴击率", subMid: "暴击伤害", subNormal: "攻击力%", subLow: "" }
+    { agent: "莱卡恩", id: 65, mainSet: "山大王", subSet: "震星迪斯科", slot4: "暴击率", slot5: "冰/攻击力%", slot6: "冲击力", subHigh: "暴击率", subMid: "暴击伤害", subNormal: "攻击力%", subLow: "" },
+    { agent: "维琳娜", id: 1960, mainSet: "呼啸沙龙", subSet: "月光骑士颂", slot4: "异常精通", slot5: "风/穿透率", slot6: "能量自动回复", subHigh: "异常精通", subMid: "攻击力%", subNormal: "", subLow: "" },
+    { agent: "佩洛伊斯", id: 1958, mainSet: "拂晓行纪", subSet: "啄木鸟电音", slot4: "暴击伤害", slot5: "以太/穿透率", slot6: "攻击力%", subHigh: "暴击伤害", subMid: "暴击率", subNormal: "穿透值", subLow: "" }
 ];
 
 export const standardOrder: StandardOrder = {
     slot4: ['攻击力%', '暴击伤害', '暴击率', '生命值%', '防御力%', '异常精通'],
-    slot5: ['攻击力%', '生命值%', '防御力%', '穿透率', '物', '火', '冰', '电', '以太'],
+    slot5: ['攻击力%', '生命值%', '防御力%', '穿透率', '物', '火', '冰', '电', '以太', '风'],
     slot6: ['攻击力%', '生命值%', '防御力%', '冲击力', '异常掌握', '能量自动回复'],
     subStats: ['生命值', '生命值%', '攻击力', '攻击力%', '防御力', '防御力%', '穿透值', '暴击率', '暴击伤害', '异常精通']
 };
@@ -83,7 +85,7 @@ export function getAllPossibleStats(): AllPossibleStats {
         console.warn('属性池尚未初始化，返回默认值');
         return {
             slot4: ['攻击力%', '暴击伤害', '暴击率', '生命值%', '防御力%', '异常精通'],
-            slot5: ['攻击力%', '生命值%', '防御力%', '穿透率', '物', '火', '冰', '电', '以太'],
+            slot5: ['攻击力%', '生命值%', '防御力%', '穿透率', '物', '火', '冰', '电', '以太', '风'],
             slot6: ['攻击力%', '生命值%', '防御力%', '冲击力', '异常掌握', '能量自动回复'],
             subStats: ['生命值', '生命值%', '攻击力', '攻击力%', '防御力', '防御力%', '穿透值', '暴击率', '暴击伤害', '异常精通']
         };
@@ -99,7 +101,7 @@ export function getSetNames(): string[] {
             '炎狱重金属', '河豚电音', '摇摆爵士', '啄木鸟电音', '灵魂摇滚', '混沌重金属',
             '原始朋克', '混沌爵士', '折枝剑歌', '静听嘉音', '如影相随', '法厄同之歌',
             '山大王', '云岿如我', '月光骑士颂', '拂晓生花', '流光咏叹', '沧浪行歌',
-            '囚徒手记', '雪兔梦游仙境'
+            '囚徒手记', '雪兔梦游仙境', '拂晓行纪', '呼啸沙龙'
         ];
     }
     return _setNames;

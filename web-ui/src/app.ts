@@ -8,6 +8,16 @@ import { getAgentData, setAgentData, initAllPossibleStats } from './data.js';
 import { confirm } from './components/confirmDialog.js';
 import { toast } from './components/toast.js';
 
+type Theme = 'dark' | 'light';
+const THEME_STORAGE_KEY = 'zzz-analyzer-theme';
+
+function applyTheme(theme: Theme): void {
+    document.documentElement.setAttribute('data-theme', theme);
+    try {
+        localStorage.setItem(THEME_STORAGE_KEY, theme);
+    } catch (e) { /* localStorage 可能不可用 */ }
+}
+
 /**
  * 绝区零驱动盘分析器 - 主应用
  */
@@ -24,6 +34,7 @@ class DriveDiscAnalyzer {
     private unsavedBanner!: HTMLElement;
     private saveNowBtn!: HTMLButtonElement;
     private dismissBannerBtn!: HTMLButtonElement;
+    private themeToggleBtn!: HTMLButtonElement;
 
     constructor() {
         const defaultData = getAgentData();
@@ -67,7 +78,7 @@ class DriveDiscAnalyzer {
         }
     }
 
-    private cacheElements(): void {
+private cacheElements(): void {
         this.navContainer = document.getElementById('navContainer')!;
         this.pageContainer = document.getElementById('pageContainer')!;
         this.importBtn = document.getElementById('importBtn') as HTMLButtonElement;
@@ -76,6 +87,7 @@ class DriveDiscAnalyzer {
         this.unsavedBanner = document.getElementById('unsavedBanner')!;
         this.saveNowBtn = document.getElementById('saveNowBtn') as HTMLButtonElement;
         this.dismissBannerBtn = document.getElementById('dismissBannerBtn') as HTMLButtonElement;
+        this.themeToggleBtn = document.getElementById('themeToggle') as HTMLButtonElement;
     }
 
     /**
@@ -100,6 +112,12 @@ class DriveDiscAnalyzer {
         // 文件操作
         this.importBtn.addEventListener('click', () => this.importCSV());
         this.saveBtn.addEventListener('click', () => this.saveCSV());
+
+        // 主题切换
+        this.themeToggleBtn.addEventListener('click', () => {
+            const current = (document.documentElement.getAttribute('data-theme') as Theme) || 'dark';
+            applyTheme(current === 'dark' ? 'light' : 'dark');
+        });
 
         // 订阅状态变更
         store.subscribe((state) => {

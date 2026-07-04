@@ -1,12 +1,22 @@
 <h1 align="center">ZZZ Drive Discs Analyzer</h1>
 <h3 align="center">绝区零 · 驱动盘分析器</h3>
+
+> **本项目已归档（Archived）**
+>
+> 米哈游官方已在《绝区零》新版本推出[智能弃置](https://www.miyoushe.com/zzz/article/76052772)功能，
+> 该功能在游戏内直接为玩家推荐应保留/弃置的驱动盘词条，
+> **本工具的核心价值已被官方功能覆盖，不再积极维护**。
+>
+> 当前可访问内容：Web UI 仍可浏览历史数据（截至 v3.0）；
+> 后续将转型为 OCR 扫描 + 多代理横向比较工具，新方向待定。
+
 <p align="center">
-<img src="https://img.shields.io/badge/版本-2.8.0-FF6B6B?style=flat-square" alt="version" />
-<img src="https://img.shields.io/badge/新·艾利都日落时-FF6B6B?style=flat-square" alt="ver-name" />
+<img src="https://img.shields.io/badge/版本-3.0.0_Archived-FF6B6B?style=flat-square" alt="version" />
+<img src="https://img.shields.io/badge/某个梦游者的自白-FF6B6B?style=flat-square" alt="ver-name" />
 <img src="https://img.shields.io/badge/Python-3.x-3776AB?style=flat-square&logo=python" alt="python" />
 <img src="https://img.shields.io/badge/TypeScript-5.9-3178C6?style=flat-square&logo=typescript" alt="typescript" />
-<img src="https://img.shields.io/badge/代理人-53-FFD93D?style=flat-square" alt="agents" />
-<img src="https://img.shields.io/badge/驱动盘套装-26-6BCB77?style=flat-square" alt="sets" />
+<img src="https://img.shields.io/badge/代理人-55-FFD93D?style=flat-square" alt="agents" />
+<img src="https://img.shields.io/badge/驱动盘套装-28-6BCB77?style=flat-square" alt="sets" />
 </p>
 
 ---
@@ -20,6 +30,18 @@
 > **"这套驱动盘，哪些属性根本没人选？"** — 反选分析
 
 ## 更新日志
+
+### v3.0.0 (Archived) - 2026-07-04
+
+**状态变更：**
+- 项目标记为 Archived。米游社官方推出[智能弃置](https://www.miyoushe.com/zzz/article/76052772)功能，
+  本工具核心价值（反选分析）已被官方功能覆盖。
+
+**数据更新（v3.0）：**
+- 新增 2 名代理人：维琳娜（风·异常）、佩洛伊斯（以太·强攻），共 55 名
+- 新增 2 套驱动盘：呼啸沙龙、拂晓行纪，共 28 套
+- 新增 slot5 属性：风（v3.0 新元素）
+- 数据源：米游社 v3.0 版本公告
 
 ### v2.8.0 - 2026-06-02
 
@@ -188,6 +210,31 @@ npm run clean         # 清理编译输出
 
 ---
 
+## 致谢 (Acknowledgments)
+
+本项目作为非商业开源工具，离不开以下社区资源的支持。
+
+### 数据与图片来源
+
+- **[米游社 (miyoushe.com)](https://www.miyoushe.com/)** — 官方社区平台，提供游戏版本公告
+- **[米游社百科 (baike.mihoyo.com)](https://baike.mihoyo.com/)** — 代理人头像、驱动盘套装图标
+- **《绝区零》(Zenless Zone Zero) — [miHoYo / HoYoverse](https://www.hoyoverse.com/)** — 原始游戏数据与角色信息
+
+### 字体
+
+- **[ZZZ System Regular](https://github.com/SpeedyOrc-C/HoYo-Glyphs)** — 由 [SpeedyOrc-C](https://github.com/SpeedyOrc-C) 维护的 [HoYo-Glyphs](https://github.com/SpeedyOrc-C/HoYo-Glyphs) 项目（release `20250529`）。该字体为 **non-commercial license**，仅用于本项目"Disc Analyzer"标题渲染。完整许可证见 [原仓库 LICENSE](https://github.com/SpeedyOrc-C/HoYo-Glyphs/blob/main/LICENSE)。
+
+### 部署
+
+- **[Netlify](https://www.netlify.com/)** — 静态站点托管（免费层）
+
+### 特别感谢
+
+- 提供反馈的绝区零玩家社区
+- 米游社百科长期维护者
+
+---
+
 <p align="center">
-<i>《绝区零》2.8版本 · 新·艾利都日落时</i>
+<i>《绝区零》v3.0 · 某个梦游者的自白 (Archived)</i>
 </p>

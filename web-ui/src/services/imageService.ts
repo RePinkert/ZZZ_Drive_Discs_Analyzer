@@ -25,3 +25,8 @@ export function getSetImageUrl(setName: string): string {
     }
     return `${SET_IMG_BASE}/${id}.webp`;
 }
+
+export function getSetId(setName: string): number | null {
+    if (!_setIdMap) return null;
+    return _setIdMap[setName] ?? null;
+}

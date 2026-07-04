@@ -1,7 +1,7 @@
 import type { SetStats, AnalysisMode, SlotType } from './types.js';
 import { sortByStandardOrder, getAllPossibleStats } from './utils.js';
 import { getAgentData } from './data.js';
-import { getSetImageUrl } from './services/imageService.js';
+import { getSetImageUrl, getSetId } from './services/imageService.js';
 
 /**
  * 渲染统计概览
@@ -73,12 +73,21 @@ export function renderSetCard(setName: string, stats: SetStats, isInverse: boole
 
     const agentCount = Object.keys(stats.agents).length;
 
+    const setId = getSetId(setName);
+    const fallbackChar = setName.charAt(0);
+
     return `
         <div class="set-card" data-set="${setName}" data-agents="${Object.values(stats.agents).join(' ')}">
             <div class="set-header">
-                <div style="display:flex;align-items:center;gap:8px">
-                    <img class="set-icon" src="${getSetImageUrl(setName)}" alt="${setName}" onerror="this.style.display='none'">
-                    <span class="set-name">${setName}</span>
+                <div class="set-identity">
+                    <div class="set-icon-wrapper">
+                        <img class="set-icon" src="${getSetImageUrl(setName)}" alt="${setName}" onerror="this.style.display='none'">
+                        <span class="set-icon-fallback" aria-hidden="true">${fallbackChar}</span>
+                    </div>
+                    <div class="set-meta">
+                        <span class="set-name">${setName}</span>
+                        <span class="set-id">套装 ID · ${setId ?? '—'}</span>
+                    </div>
                 </div>
                 <span class="agent-count">${agentCount} 代理人</span>
             </div>
